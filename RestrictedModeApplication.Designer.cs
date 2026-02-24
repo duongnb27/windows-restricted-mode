@@ -36,10 +36,15 @@ namespace RestrictedMode
             this.lblPasswordHint = new System.Windows.Forms.Label();
             this.txtRestrictedPassword = new System.Windows.Forms.TextBox();
             this.btnShowPassword = new System.Windows.Forms.Button();
+            this.grpHotCorner = new System.Windows.Forms.GroupBox();
+            this.chkHotCornerEnabled = new System.Windows.Forms.CheckBox();
+            this.lblHotCornerPosition = new System.Windows.Forms.Label();
+            this.cboHotCornerPosition = new System.Windows.Forms.ComboBox();
             this.grpHotkey.SuspendLayout();
             this.grpWatchDog.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numIntervalSeconds)).BeginInit();
             this.grpPassword.SuspendLayout();
+            this.grpHotCorner.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpHotkey
@@ -52,12 +57,12 @@ namespace RestrictedMode
             this.grpHotkey.Controls.Add(this.chkCtrl);
             this.grpHotkey.Controls.Add(this.lblHotkey);
             this.grpHotkey.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
-            this.grpHotkey.Location = new System.Drawing.Point(12, 12);
+            this.grpHotkey.Location = new System.Drawing.Point(12, 96);
             this.grpHotkey.Name = "grpHotkey";
             this.grpHotkey.Size = new System.Drawing.Size(800, 72);
             this.grpHotkey.TabIndex = 0;
             this.grpHotkey.TabStop = false;
-            this.grpHotkey.Text = "Tổ hợp phím thoát Restricted Mode";
+            this.grpHotkey.Text = "Exit Hotkey";
             // 
             // cboExitKey
             // 
@@ -110,7 +115,7 @@ namespace RestrictedMode
             this.lblHotkey.Name = "lblHotkey";
             this.lblHotkey.Size = new System.Drawing.Size(248, 19);
             this.lblHotkey.TabIndex = 0;
-            this.lblHotkey.Text = "Nhấn tổ hợp này để thoát Restricted Mode:";
+            this.lblHotkey.Text = "Press this combination to exit Restricted Mode:";
             // 
             // grpWatchDog
             // 
@@ -123,12 +128,12 @@ namespace RestrictedMode
             this.grpWatchDog.Controls.Add(this.btnAddProcess);
             this.grpWatchDog.Controls.Add(this.btnRemoveProcess);
             this.grpWatchDog.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
-            this.grpWatchDog.Location = new System.Drawing.Point(12, 172);
+            this.grpWatchDog.Location = new System.Drawing.Point(12, 260);
             this.grpWatchDog.Name = "grpWatchDog";
             this.grpWatchDog.Size = new System.Drawing.Size(800, 284);
             this.grpWatchDog.TabIndex = 1;
             this.grpWatchDog.TabStop = false;
-            this.grpWatchDog.Text = "Tiến trình cần chạy liên tục";
+            this.grpWatchDog.Text = "Processes to keep running";
             // 
             // lblInterval
             // 
@@ -138,12 +143,12 @@ namespace RestrictedMode
             this.lblInterval.Name = "lblInterval";
             this.lblInterval.Size = new System.Drawing.Size(127, 19);
             this.lblInterval.TabIndex = 0;
-            this.lblInterval.Text = "Kiểm tra mỗi (giây):";
+            this.lblInterval.Text = "Check every (seconds):";
             // 
             // numIntervalSeconds
             // 
             this.numIntervalSeconds.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
-            this.numIntervalSeconds.Location = new System.Drawing.Point(140, 22);
+            this.numIntervalSeconds.Location = new System.Drawing.Point(160, 22);
             this.numIntervalSeconds.Maximum = new decimal(new int[] {
             300,
             0,
@@ -186,17 +191,17 @@ namespace RestrictedMode
             // 
             // colExe
             // 
-            this.colExe.Text = "File .exe";
+            this.colExe.Text = "Exe file";
             this.colExe.Width = 229;
             // 
             // colArgs
             // 
-            this.colArgs.Text = "Tham số";
+            this.colArgs.Text = "Arguments";
             this.colArgs.Width = 179;
             // 
             // colWorkDir
             // 
-            this.colWorkDir.Text = "Thư mục làm việc";
+            this.colWorkDir.Text = "Working directory";
             this.colWorkDir.Width = 341;
             // 
             // btnAddProcess
@@ -207,7 +212,7 @@ namespace RestrictedMode
             this.btnAddProcess.Name = "btnAddProcess";
             this.btnAddProcess.Size = new System.Drawing.Size(75, 26);
             this.btnAddProcess.TabIndex = 3;
-            this.btnAddProcess.Text = "Thêm";
+            this.btnAddProcess.Text = "Add";
             this.btnAddProcess.UseVisualStyleBackColor = true;
             this.btnAddProcess.Click += new System.EventHandler(this.btnAddProcess_Click);
             // 
@@ -219,7 +224,7 @@ namespace RestrictedMode
             this.btnRemoveProcess.Name = "btnRemoveProcess";
             this.btnRemoveProcess.Size = new System.Drawing.Size(75, 26);
             this.btnRemoveProcess.TabIndex = 4;
-            this.btnRemoveProcess.Text = "Xóa";
+            this.btnRemoveProcess.Text = "Remove";
             this.btnRemoveProcess.UseVisualStyleBackColor = true;
             this.btnRemoveProcess.Click += new System.EventHandler(this.btnRemoveProcess_Click);
             // 
@@ -227,11 +232,11 @@ namespace RestrictedMode
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeButtonLarge);
-            this.btnSave.Location = new System.Drawing.Point(552, 464);
+            this.btnSave.Location = new System.Drawing.Point(552, 540);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(130, 38);
             this.btnSave.TabIndex = 2;
-            this.btnSave.Text = "Lưu cấu hình";
+            this.btnSave.Text = "Save configuration";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
@@ -240,11 +245,11 @@ namespace RestrictedMode
             this.btnStartRestricted.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStartRestricted.BackColor = System.Drawing.SystemColors.ControlLight;
             this.btnStartRestricted.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeButtonLarge, System.Drawing.FontStyle.Bold);
-            this.btnStartRestricted.Location = new System.Drawing.Point(690, 464);
+            this.btnStartRestricted.Location = new System.Drawing.Point(690, 540);
             this.btnStartRestricted.Name = "btnStartRestricted";
             this.btnStartRestricted.Size = new System.Drawing.Size(122, 38);
             this.btnStartRestricted.TabIndex = 3;
-            this.btnStartRestricted.Text = "Bắt đầu Restricted";
+            this.btnStartRestricted.Text = "Start Restricted";
             this.btnStartRestricted.UseVisualStyleBackColor = false;
             this.btnStartRestricted.Click += new System.EventHandler(this.btnStartRestricted_Click);
             // 
@@ -256,12 +261,58 @@ namespace RestrictedMode
             this.grpPassword.Controls.Add(this.txtRestrictedPassword);
             this.grpPassword.Controls.Add(this.btnShowPassword);
             this.grpPassword.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
-            this.grpPassword.Location = new System.Drawing.Point(12, 90);
+            this.grpPassword.Location = new System.Drawing.Point(12, 12);
             this.grpPassword.Name = "grpPassword";
             this.grpPassword.Size = new System.Drawing.Size(800, 76);
             this.grpPassword.TabIndex = 5;
             this.grpPassword.TabStop = false;
-            this.grpPassword.Text = "Mật khẩu Restricted Mode";
+            this.grpPassword.Text = "Restricted Mode Password";
+            // 
+            // grpHotCorner
+            // 
+            this.grpHotCorner.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpHotCorner.Controls.Add(this.chkHotCornerEnabled);
+            this.grpHotCorner.Controls.Add(this.lblHotCornerPosition);
+            this.grpHotCorner.Controls.Add(this.cboHotCornerPosition);
+            this.grpHotCorner.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
+            this.grpHotCorner.Location = new System.Drawing.Point(12, 176);
+            this.grpHotCorner.Name = "grpHotCorner";
+            this.grpHotCorner.Size = new System.Drawing.Size(800, 76);
+            this.grpHotCorner.TabIndex = 6;
+            this.grpHotCorner.TabStop = false;
+            this.grpHotCorner.Text = "Exit Hot Corner";
+            // 
+            // chkHotCornerEnabled
+            // 
+            this.chkHotCornerEnabled.AutoSize = true;
+            this.chkHotCornerEnabled.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
+            this.chkHotCornerEnabled.Location = new System.Drawing.Point(13, 22);
+            this.chkHotCornerEnabled.Name = "chkHotCornerEnabled";
+            this.chkHotCornerEnabled.Size = new System.Drawing.Size(348, 23);
+            this.chkHotCornerEnabled.TabIndex = 0;
+            this.chkHotCornerEnabled.Text = "Enable";
+            this.chkHotCornerEnabled.UseVisualStyleBackColor = true;
+            // 
+            // lblHotCornerPosition
+            // 
+            this.lblHotCornerPosition.AutoSize = true;
+            this.lblHotCornerPosition.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
+            this.lblHotCornerPosition.Location = new System.Drawing.Point(10, 48);
+            this.lblHotCornerPosition.Name = "lblHotCornerPosition";
+            this.lblHotCornerPosition.Size = new System.Drawing.Size(38, 19);
+            this.lblHotCornerPosition.TabIndex = 1;
+            this.lblHotCornerPosition.Text = "Corner:";
+            // 
+            // cboHotCornerPosition
+            // 
+            this.cboHotCornerPosition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboHotCornerPosition.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
+            this.cboHotCornerPosition.FormattingEnabled = true;
+            this.cboHotCornerPosition.Location = new System.Drawing.Point(65, 45);
+            this.cboHotCornerPosition.Name = "cboHotCornerPosition";
+            this.cboHotCornerPosition.Size = new System.Drawing.Size(140, 25);
+            this.cboHotCornerPosition.TabIndex = 2;
             // 
             // lblPasswordHint
             // 
@@ -271,7 +322,7 @@ namespace RestrictedMode
             this.lblPasswordHint.Name = "lblPasswordHint";
             this.lblPasswordHint.Size = new System.Drawing.Size(399, 19);
             this.lblPasswordHint.TabIndex = 0;
-            this.lblPasswordHint.Text = "Để trống là không yêu cầu mật khẩu khi thoát Restricted Mode:";
+            this.lblPasswordHint.Text = "Leave empty to not require password when exiting Restricted Mode:";
             // 
             // txtRestrictedPassword
             // 
@@ -297,17 +348,18 @@ namespace RestrictedMode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(824, 505);
+            this.ClientSize = new System.Drawing.Size(824, 581);
             this.Controls.Add(this.btnStartRestricted);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.grpWatchDog);
-            this.Controls.Add(this.grpPassword);
+            this.Controls.Add(this.grpHotCorner);
             this.Controls.Add(this.grpHotkey);
+            this.Controls.Add(this.grpPassword);
             this.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.MinimumSize = new System.Drawing.Size(500, 430);
             this.Name = "RestrictedModeApplication";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Restricted Mode — Cấu hình";
+            this.Text = "Restricted Mode — Configuration";
             this.grpHotkey.ResumeLayout(false);
             this.grpHotkey.PerformLayout();
             this.grpWatchDog.ResumeLayout(false);
@@ -315,6 +367,8 @@ namespace RestrictedMode
             ((System.ComponentModel.ISupportInitialize)(this.numIntervalSeconds)).EndInit();
             this.grpPassword.ResumeLayout(false);
             this.grpPassword.PerformLayout();
+            this.grpHotCorner.ResumeLayout(false);
+            this.grpHotCorner.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -342,5 +396,9 @@ namespace RestrictedMode
         private System.Windows.Forms.Label lblPasswordHint;
         private System.Windows.Forms.TextBox txtRestrictedPassword;
         private System.Windows.Forms.Button btnShowPassword;
+        private System.Windows.Forms.GroupBox grpHotCorner;
+        private System.Windows.Forms.CheckBox chkHotCornerEnabled;
+        private System.Windows.Forms.Label lblHotCornerPosition;
+        private System.Windows.Forms.ComboBox cboHotCornerPosition;
     }
 }

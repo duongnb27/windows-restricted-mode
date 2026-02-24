@@ -24,7 +24,7 @@ namespace RestrictedMode
             using (var dlg = new OpenFileDialog())
             {
                 dlg.Filter = "Executable (*.exe)|*.exe|All files (*.*)|*.*";
-                dlg.Title = "Chọn file .exe";
+                dlg.Title = "Select .exe file";
                 if (!string.IsNullOrWhiteSpace(txtExePath.Text) && File.Exists(txtExePath.Text))
                     dlg.InitialDirectory = Path.GetDirectoryName(txtExePath.Text);
                 if (dlg.ShowDialog(this) == DialogResult.OK)
@@ -40,7 +40,7 @@ namespace RestrictedMode
         {
             using (var dlg = new FolderBrowserDialog())
             {
-                dlg.Description = "Chọn thư mục làm việc";
+                dlg.Description = "Select working directory";
                 if (!string.IsNullOrWhiteSpace(txtWorkingDir.Text) && Directory.Exists(txtWorkingDir.Text))
                     dlg.SelectedPath = txtWorkingDir.Text;
                 if (dlg.ShowDialog(this) == DialogResult.OK)
@@ -53,20 +53,20 @@ namespace RestrictedMode
             string exe = (txtExePath.Text ?? "").Trim();
             if (string.IsNullOrEmpty(exe))
             {
-                MessageBox.Show(this, "Vui lòng chọn đường dẫn file .exe.", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Please select the .exe file path.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtExePath.Focus();
                 return;
             }
             if (!File.Exists(exe))
             {
-                MessageBox.Show(this, "File .exe không tồn tại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "The .exe file does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtExePath.Focus();
                 return;
             }
             string workDir = (txtWorkingDir.Text ?? "").Trim();
             if (!string.IsNullOrEmpty(workDir) && !Directory.Exists(workDir))
             {
-                MessageBox.Show(this, "Thư mục làm việc không tồn tại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Working directory does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtWorkingDir.Focus();
                 return;
             }

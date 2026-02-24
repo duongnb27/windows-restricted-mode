@@ -30,7 +30,7 @@ namespace RestrictedMode
             this.lblPrompt.Name = "lblPrompt";
             this.lblPrompt.Size = new System.Drawing.Size(200, 17);
             this.lblPrompt.TabIndex = 0;
-            this.lblPrompt.Text = "Nhập mật khẩu:";
+            this.lblPrompt.Text = "Enter password:";
             //
             // txtPassword
             //
@@ -71,7 +71,7 @@ namespace RestrictedMode
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 28);
             this.btnCancel.TabIndex = 4;
-            this.btnCancel.Text = "Hủy";
+            this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             //
             // PasswordDialogForm
@@ -91,7 +91,7 @@ namespace RestrictedMode
             this.MinimizeBox = false;
             this.Name = "PasswordDialogForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Mật khẩu";
+            this.Text = "Password";
             this.ResumeLayout(false);
             this.PerformLayout();
         }

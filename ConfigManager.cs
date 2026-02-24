@@ -6,9 +6,6 @@ using System.Web.Script.Serialization;
 
 namespace RestrictedMode
 {
-    /// <summary>
-    /// Exit hotkey config (key name as string).
-    /// </summary>
     public class ExitHotkeyConfig
     {
         public string Key { get; set; } = "F12";
@@ -17,9 +14,6 @@ namespace RestrictedMode
         public bool Alt { get; set; } = false;
     }
 
-    /// <summary>
-    /// Single watchdog process entry (for serialization).
-    /// </summary>
     public class WatchDogProcessConfig
     {
         public string ExePath { get; set; }
@@ -27,26 +21,37 @@ namespace RestrictedMode
         public string WorkingDirectory { get; set; }
     }
 
-    /// <summary>
-    /// Watchdog config.
-    /// </summary>
     public class WatchDogConfig
     {
         public int CheckIntervalMs { get; set; } = 5000;
         public WatchDogProcessConfig[] Processes { get; set; } = new WatchDogProcessConfig[0];
     }
 
-    /// <summary>
-    /// Full restricted-mode app config.
-    /// </summary>
+    public enum ExitHotCornerPosition
+    {
+        TopLeft = 0,
+        TopRight = 1,
+        BottomLeft = 2,
+        BottomRight = 3
+    }
+
     public class AppConfig
     {
         public ExitHotkeyConfig ExitHotkey { get; set; } = new ExitHotkeyConfig();
         public WatchDogConfig WatchDog { get; set; } = new WatchDogConfig();
         /// <summary>
-        /// Password to exit Restricted Mode (empty = not required).
+        /// Password to exit restricted mode; empty = not required.
         /// </summary>
         public string RestrictedPassword { get; set; }
+        public bool ExitHotCornerEnabled { get; set; } = false;
+        /// <summary>
+        /// 0=TopLeft, 1=TopRight, 2=BottomLeft, 3=BottomRight.
+        /// </summary>
+        public int ExitHotCornerCorner { get; set; } = (int)ExitHotCornerPosition.TopLeft;
+        /// <summary>
+        /// Size of corner zone in pixels.
+        /// </summary>
+        public int ExitHotCornerSizePx { get; set; } = 60;
     }
 
     /// <summary>
@@ -107,19 +112,19 @@ namespace RestrictedMode
                 string encrypted = Encrypt(json);
                 File.WriteAllText(ConfigPath, encrypted, Encoding.UTF8);
             }
-            catch { /* ignore */ }
+            catch { }
         }
 
-        /// <summary>
-        /// Default config.
-        /// </summary>
         public static AppConfig GetDefault()
         {
             return new AppConfig
             {
                 ExitHotkey = new ExitHotkeyConfig { Key = "F12", Ctrl = true, Shift = true, Alt = false },
                 WatchDog = new WatchDogConfig { CheckIntervalMs = 5000, Processes = new WatchDogProcessConfig[0] },
-                RestrictedPassword = null
+                RestrictedPassword = null,
+                ExitHotCornerEnabled = false,
+                ExitHotCornerCorner = (int)ExitHotCornerPosition.TopLeft,
+                ExitHotCornerSizePx = 60
             };
         }
 

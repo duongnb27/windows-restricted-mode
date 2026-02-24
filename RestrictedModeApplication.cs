@@ -10,6 +10,7 @@ namespace RestrictedMode
     {
         private KeyboardHook _keyboardHook;
         private ServicesWatchDog _watchDog;
+        private ExitHotCorners _exitHotCorners;
         private AppConfig _config;
         /// <summary>
         /// When true, form can show (after exit); blocked while restricted.
@@ -49,7 +50,7 @@ namespace RestrictedMode
         }
 
         /// <summary>
-        /// Loads config, subscribes events, enters restricted. Runs once (form may run hidden so OnLoad might not run).
+        /// Runs once; form may run hidden so OnLoad might not run.
         /// </summary>
         private void InitialLoadAndStartRestricted()
         {
@@ -59,6 +60,13 @@ namespace RestrictedMode
             foreach (var k in ExitKeyNames)
                 cboExitKey.Items.Add(k);
             cboExitKey.SelectedIndex = 0;
+
+            cboHotCornerPosition.Items.Clear();
+            cboHotCornerPosition.Items.Add("Top left");
+            cboHotCornerPosition.Items.Add("Top right");
+            cboHotCornerPosition.Items.Add("Bottom left");
+            cboHotCornerPosition.Items.Add("Bottom right");
+            cboHotCornerPosition.SelectedIndex = 0;
 
             _config = ConfigManager.Load();
             if (!File.Exists(ConfigManager.ConfigPath))
@@ -83,6 +91,11 @@ namespace RestrictedMode
                 cboExitKey.SelectedIndex = idx >= 0 ? idx : 0;
             }
             txtRestrictedPassword.Text = c.RestrictedPassword ?? "";
+
+            chkHotCornerEnabled.Checked = c.ExitHotCornerEnabled;
+            var cornerIdx = Math.Max(0, Math.Min(3, c.ExitHotCornerCorner));
+            if (cboHotCornerPosition.Items.Count >= 4)
+                cboHotCornerPosition.SelectedIndex = cornerIdx;
 
             if (c.WatchDog != null)
             {
@@ -128,6 +141,8 @@ namespace RestrictedMode
             }
             _config.WatchDog.Processes = list.ToArray();
             _config.RestrictedPassword = string.IsNullOrWhiteSpace(txtRestrictedPassword.Text) ? null : txtRestrictedPassword.Text.Trim();
+            _config.ExitHotCornerEnabled = chkHotCornerEnabled.Checked;
+            _config.ExitHotCornerCorner = cboHotCornerPosition.SelectedIndex >= 0 ? Math.Min(3, cboHotCornerPosition.SelectedIndex) : 0;
         }
 
         private void btnShowPassword_Click(object sender, EventArgs e)
@@ -140,7 +155,7 @@ namespace RestrictedMode
         {
             UIToConfig();
             ConfigManager.Save(_config);
-            MessageBox.Show(this, "Đã lưu cấu hình.", "Lưu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "Configuration saved.", "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnStartRestricted_Click(object sender, EventArgs e)
@@ -151,7 +166,7 @@ namespace RestrictedMode
         }
 
         /// <summary>
-        /// Applies current config and enters restricted (no password on start).
+        /// Applies config and enters restricted mode (no password prompt on start).
         /// </summary>
         private void StartRestricted()
         {
@@ -176,6 +191,10 @@ namespace RestrictedMode
             }
             _watchDog.Start();
 
+            if (_exitHotCorners == null)
+                _exitHotCorners = new ExitHotCorners(this);
+            _exitHotCorners.Start(_config.ExitHotCornerEnabled, _config.ExitHotCornerCorner, _config.ExitHotCornerSizePx);
+
             Hide();
         }
 
@@ -192,7 +211,7 @@ namespace RestrictedMode
                 RestrictedState.ConfirmExitRestricted();
                 return;
             }
-            using (var dlg = new PasswordDialogForm("Thoát Restricted Mode", "Nhập mật khẩu để thoát Restricted Mode:"))
+            using (var dlg = new PasswordDialogForm("Exit Restricted Mode", "Enter password to exit Restricted Mode:"))
             {
                 dlg.TopMost = true;
                 dlg.StartPosition = FormStartPosition.CenterScreen;
@@ -200,7 +219,7 @@ namespace RestrictedMode
                     return;
                 if (dlg.EnteredPassword != requiredPassword)
                 {
-                    MessageBox.Show(dlg, "Sai mật khẩu.", "Mật khẩu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(dlg, "Wrong password.", "Password", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 RestrictedState.ConfirmExitRestricted();
@@ -209,6 +228,7 @@ namespace RestrictedMode
 
         private void OnRestrictedModeExited()
         {
+            _exitHotCorners?.Stop();
             _keyboardHook?.Uninstall();
             TaskManagerPolicy.Enable();
             _watchDog?.Stop();
@@ -269,6 +289,7 @@ namespace RestrictedMode
             if (_config != null)
                 ConfigManager.Save(_config);
             _keyboardHook?.Dispose();
+            _exitHotCorners?.Dispose();
             base.OnFormClosing(e);
         }
     }

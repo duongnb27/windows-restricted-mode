@@ -35,7 +35,7 @@ namespace RestrictedMode
             this.lblExe.Name = "lblExe";
             this.lblExe.Size = new System.Drawing.Size(68, 13);
             this.lblExe.TabIndex = 0;
-            this.lblExe.Text = "Đường dẫn exe:";
+            this.lblExe.Text = "Exe path:";
             //
             // txtExePath
             //
@@ -66,7 +66,7 @@ namespace RestrictedMode
             this.lblArgs.Name = "lblArgs";
             this.lblArgs.Size = new System.Drawing.Size(50, 13);
             this.lblArgs.TabIndex = 3;
-            this.lblArgs.Text = "Tham số:";
+            this.lblArgs.Text = "Arguments:";
             //
             // txtArguments
             //
@@ -85,7 +85,7 @@ namespace RestrictedMode
             this.lblWorkDir.Name = "lblWorkDir";
             this.lblWorkDir.Size = new System.Drawing.Size(97, 13);
             this.lblWorkDir.TabIndex = 5;
-            this.lblWorkDir.Text = "Thư mục làm việc (tùy chọn):";
+            this.lblWorkDir.Text = "Working directory (optional):";
             //
             // txtWorkingDir
             //
@@ -130,7 +130,7 @@ namespace RestrictedMode
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 28);
             this.btnCancel.TabIndex = 9;
-            this.btnCancel.Text = "Hủy";
+            this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             //
             // ProcessEditForm
@@ -156,7 +156,7 @@ namespace RestrictedMode
             this.MinimizeBox = false;
             this.Name = "ProcessEditForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Thêm / Sửa tiến trình";
+            this.Text = "Add / Edit process";
             this.ResumeLayout(false);
             this.PerformLayout();
         }
