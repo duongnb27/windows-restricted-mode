@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace RestrictedMode
 {
-    public partial class Form1 : Form
+    public partial class RestrictedModeApplication : Form
     {
         private KeyboardHook _keyboardHook;
         private ServicesWatchDog _watchDog;
@@ -18,7 +18,7 @@ namespace RestrictedMode
         private bool _initialLoadDone;
         private static readonly string[] ExitKeyNames = { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "Escape", "Tab", "Pause" };
 
-        public Form1()
+        public RestrictedModeApplication()
         {
             InitializeComponent();
             ShowInTaskbar = false;

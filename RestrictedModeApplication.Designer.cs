@@ -1,6 +1,6 @@
 namespace RestrictedMode
 {
-    partial class Form1
+    partial class RestrictedModeApplication
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -293,7 +293,7 @@ namespace RestrictedMode
             this.btnShowPassword.UseVisualStyleBackColor = true;
             this.btnShowPassword.Click += new System.EventHandler(this.btnShowPassword_Click);
             // 
-            // Form1
+            // RestrictedModeApplication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -305,7 +305,7 @@ namespace RestrictedMode
             this.Controls.Add(this.grpHotkey);
             this.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.MinimumSize = new System.Drawing.Size(500, 430);
-            this.Name = "Form1";
+            this.Name = "RestrictedModeApplication";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Restricted Mode — Cấu hình";
             this.grpHotkey.ResumeLayout(false);
