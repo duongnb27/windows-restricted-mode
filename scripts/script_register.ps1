@@ -7,7 +7,7 @@ if (-not $isAdmin) {
 
 # 1. Application info
 $AppName = "RestrictedMode" 
-$ExePath = "C:\Path\To\Your\RestrictedMode.exe" # <-- SET THE ACTUAL PATH HERE
+$ExePath = Join-Path $PSScriptRoot "RestrictedMode.exe"
 $TaskName = "Launch_$AppName"
 
 # 2. Trigger: run when user logs on
