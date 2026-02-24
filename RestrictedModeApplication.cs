@@ -17,6 +17,10 @@ namespace RestrictedMode
         /// </summary>
         private bool _allowShowForm;
         private bool _initialLoadDone;
+        /// <summary>
+        /// When true, password dialog is already visible; ignore further hotkey/hot corner until it closes.
+        /// </summary>
+        private bool _passwordDialogShowing;
         private static readonly string[] ExitKeyNames = { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "Escape", "Tab", "Pause" };
 
         public RestrictedModeApplication()
@@ -205,24 +209,34 @@ namespace RestrictedMode
                 BeginInvoke(new Action(OnExitRestrictedRequested));
                 return;
             }
+            if (_passwordDialogShowing)
+                return;
             string requiredPassword = string.IsNullOrWhiteSpace(_config?.RestrictedPassword) ? null : _config.RestrictedPassword;
             if (requiredPassword == null)
             {
                 RestrictedState.ConfirmExitRestricted();
                 return;
             }
-            using (var dlg = new PasswordDialogForm("Exit Restricted Mode", "Enter password to exit Restricted Mode:"))
+            _passwordDialogShowing = true;
+            try
             {
-                dlg.TopMost = true;
-                dlg.StartPosition = FormStartPosition.CenterScreen;
-                if (dlg.ShowDialog() != DialogResult.OK)
-                    return;
-                if (dlg.EnteredPassword != requiredPassword)
+                using (var dlg = new PasswordDialogForm("Exit Restricted Mode", "Enter password to exit Restricted Mode:"))
                 {
-                    MessageBox.Show(dlg, "Wrong password.", "Password", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                    dlg.TopMost = true;
+                    dlg.StartPosition = FormStartPosition.CenterScreen;
+                    if (dlg.ShowDialog() != DialogResult.OK)
+                        return;
+                    if (dlg.EnteredPassword != requiredPassword)
+                    {
+                        MessageBox.Show(dlg, "Wrong password!", "Password", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    RestrictedState.ConfirmExitRestricted();
                 }
-                RestrictedState.ConfirmExitRestricted();
+            }
+            finally
+            {
+                _passwordDialogShowing = false;
             }
         }
 
