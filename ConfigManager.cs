@@ -51,7 +51,7 @@ namespace RestrictedMode
         /// <summary>
         /// Size of corner zone in pixels.
         /// </summary>
-        public int ExitHotCornerSizePx { get; set; } = 60;
+        public int ExitHotCornerSizePx { get; set; } = 50;
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ namespace RestrictedMode
                 RestrictedPassword = null,
                 ExitHotCornerEnabled = false,
                 ExitHotCornerCorner = (int)ExitHotCornerPosition.TopLeft,
-                ExitHotCornerSizePx = 60
+                ExitHotCornerSizePx = 50
             };
         }
 

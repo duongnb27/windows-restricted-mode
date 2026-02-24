@@ -100,6 +100,8 @@ namespace RestrictedMode
             var cornerIdx = Math.Max(0, Math.Min(3, c.ExitHotCornerCorner));
             if (cboHotCornerPosition.Items.Count >= 4)
                 cboHotCornerPosition.SelectedIndex = cornerIdx;
+            int sizePx = Math.Max(20, Math.Min(200, c.ExitHotCornerSizePx));
+            numHotCornerSize.Value = sizePx;
 
             if (c.WatchDog != null)
             {
@@ -147,6 +149,7 @@ namespace RestrictedMode
             _config.RestrictedPassword = string.IsNullOrWhiteSpace(txtRestrictedPassword.Text) ? null : txtRestrictedPassword.Text.Trim();
             _config.ExitHotCornerEnabled = chkHotCornerEnabled.Checked;
             _config.ExitHotCornerCorner = cboHotCornerPosition.SelectedIndex >= 0 ? Math.Min(3, cboHotCornerPosition.SelectedIndex) : 0;
+            _config.ExitHotCornerSizePx = (int)numHotCornerSize.Value;
         }
 
         private void btnShowPassword_Click(object sender, EventArgs e)

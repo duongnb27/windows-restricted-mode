@@ -40,11 +40,14 @@ namespace RestrictedMode
             this.chkHotCornerEnabled = new System.Windows.Forms.CheckBox();
             this.lblHotCornerPosition = new System.Windows.Forms.Label();
             this.cboHotCornerPosition = new System.Windows.Forms.ComboBox();
+            this.lblHotCornerSize = new System.Windows.Forms.Label();
+            this.numHotCornerSize = new System.Windows.Forms.NumericUpDown();
             this.grpHotkey.SuspendLayout();
             this.grpWatchDog.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numIntervalSeconds)).BeginInit();
             this.grpPassword.SuspendLayout();
             this.grpHotCorner.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numHotCornerSize)).BeginInit();
             this.SuspendLayout();
             // 
             // grpHotkey
@@ -128,7 +131,7 @@ namespace RestrictedMode
             this.grpWatchDog.Controls.Add(this.btnAddProcess);
             this.grpWatchDog.Controls.Add(this.btnRemoveProcess);
             this.grpWatchDog.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
-            this.grpWatchDog.Location = new System.Drawing.Point(12, 260);
+            this.grpWatchDog.Location = new System.Drawing.Point(12, 302);
             this.grpWatchDog.Name = "grpWatchDog";
             this.grpWatchDog.Size = new System.Drawing.Size(800, 284);
             this.grpWatchDog.TabIndex = 1;
@@ -232,7 +235,7 @@ namespace RestrictedMode
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeButtonLarge);
-            this.btnSave.Location = new System.Drawing.Point(552, 540);
+            this.btnSave.Location = new System.Drawing.Point(552, 600);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(130, 38);
             this.btnSave.TabIndex = 2;
@@ -245,7 +248,7 @@ namespace RestrictedMode
             this.btnStartRestricted.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStartRestricted.BackColor = System.Drawing.SystemColors.ControlLight;
             this.btnStartRestricted.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeButtonLarge, System.Drawing.FontStyle.Bold);
-            this.btnStartRestricted.Location = new System.Drawing.Point(690, 540);
+            this.btnStartRestricted.Location = new System.Drawing.Point(690, 600);
             this.btnStartRestricted.Name = "btnStartRestricted";
             this.btnStartRestricted.Size = new System.Drawing.Size(122, 38);
             this.btnStartRestricted.TabIndex = 3;
@@ -275,10 +278,12 @@ namespace RestrictedMode
             this.grpHotCorner.Controls.Add(this.chkHotCornerEnabled);
             this.grpHotCorner.Controls.Add(this.lblHotCornerPosition);
             this.grpHotCorner.Controls.Add(this.cboHotCornerPosition);
+            this.grpHotCorner.Controls.Add(this.lblHotCornerSize);
+            this.grpHotCorner.Controls.Add(this.numHotCornerSize);
             this.grpHotCorner.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.grpHotCorner.Location = new System.Drawing.Point(12, 176);
             this.grpHotCorner.Name = "grpHotCorner";
-            this.grpHotCorner.Size = new System.Drawing.Size(800, 76);
+            this.grpHotCorner.Size = new System.Drawing.Size(800, 118);
             this.grpHotCorner.TabIndex = 6;
             this.grpHotCorner.TabStop = false;
             this.grpHotCorner.Text = "Exit Hot Corner";
@@ -314,6 +319,39 @@ namespace RestrictedMode
             this.cboHotCornerPosition.Size = new System.Drawing.Size(140, 25);
             this.cboHotCornerPosition.TabIndex = 2;
             // 
+            // lblHotCornerSize
+            // 
+            this.lblHotCornerSize.AutoSize = true;
+            this.lblHotCornerSize.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
+            this.lblHotCornerSize.Location = new System.Drawing.Point(10, 78);
+            this.lblHotCornerSize.Name = "lblHotCornerSize";
+            this.lblHotCornerSize.Size = new System.Drawing.Size(99, 19);
+            this.lblHotCornerSize.TabIndex = 3;
+            this.lblHotCornerSize.Text = "Size (pixels):";
+            // 
+            // numHotCornerSize
+            // 
+            this.numHotCornerSize.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
+            this.numHotCornerSize.Location = new System.Drawing.Point(90, 76);
+            this.numHotCornerSize.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.numHotCornerSize.Minimum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.numHotCornerSize.Name = "numHotCornerSize";
+            this.numHotCornerSize.Size = new System.Drawing.Size(70, 25);
+            this.numHotCornerSize.TabIndex = 4;
+            this.numHotCornerSize.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            // 
             // lblPasswordHint
             // 
             this.lblPasswordHint.AutoSize = true;
@@ -348,7 +386,7 @@ namespace RestrictedMode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(824, 581);
+            this.ClientSize = new System.Drawing.Size(824, 645);
             this.Controls.Add(this.btnStartRestricted);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.grpWatchDog);
@@ -369,6 +407,7 @@ namespace RestrictedMode
             this.grpPassword.PerformLayout();
             this.grpHotCorner.ResumeLayout(false);
             this.grpHotCorner.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numHotCornerSize)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -400,5 +439,7 @@ namespace RestrictedMode
         private System.Windows.Forms.CheckBox chkHotCornerEnabled;
         private System.Windows.Forms.Label lblHotCornerPosition;
         private System.Windows.Forms.ComboBox cboHotCornerPosition;
+        private System.Windows.Forms.Label lblHotCornerSize;
+        private System.Windows.Forms.NumericUpDown numHotCornerSize;
     }
 }

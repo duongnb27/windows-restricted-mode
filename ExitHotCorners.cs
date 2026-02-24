@@ -6,7 +6,8 @@ using System.Windows.Forms;
 namespace RestrictedMode
 {
     /// <summary>
-    /// When cursor enters the configured corner, triggers exit restricted flow (password dialog). Touch that moves the cursor is also detected.
+    /// When cursor enters the configured corner (or user taps/clicks the corner), triggers exit restricted flow.
+    /// Uses an always-on-top overlay so the hot corner is clickable even when other apps are on top (e.g. touch screens).
     /// </summary>
     public class ExitHotCorners : IDisposable
     {
@@ -31,6 +32,7 @@ namespace RestrictedMode
         private int _cornerIndex;
         private int _sizePx;
         private bool _disposed;
+        private HotCornerOverlayForm _overlay;
 
         public ExitHotCorners(Control invokeTarget)
         {
@@ -51,11 +53,17 @@ namespace RestrictedMode
 
             if (_enabled)
             {
+                EnsureOverlay();
+                if (_overlay != null)
+                    _overlay.UpdatePosition(_cornerIndex, _sizePx);
                 if (!_timer.Enabled)
                     _timer.Start();
             }
             else
+            {
                 _timer.Stop();
+                DestroyOverlay();
+            }
         }
 
         public void Start(bool enabled, int cornerIndex, int sizePx)
@@ -68,6 +76,30 @@ namespace RestrictedMode
             _timer.Stop();
             _enabled = false;
             _lastInCorner = false;
+            DestroyOverlay();
+        }
+
+        private void EnsureOverlay()
+        {
+            if (_overlay != null && !_overlay.IsDisposed)
+                return;
+            _overlay = new HotCornerOverlayForm(_invokeTarget, () => TriggerExitRequested());
+            _overlay.UpdatePosition(_cornerIndex, _sizePx);
+            _overlay.Show();
+        }
+
+        private void DestroyOverlay()
+        {
+            if (_overlay == null) return;
+            try
+            {
+                if (!_overlay.IsDisposed)
+                    _overlay.Dispose();
+            }
+            finally
+            {
+                _overlay = null;
+            }
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -132,7 +164,66 @@ namespace RestrictedMode
             if (_disposed) return;
             _timer.Stop();
             _timer.Dispose();
+            DestroyOverlay();
             _disposed = true;
+        }
+
+        /// <summary>
+        /// Small always-on-top form in the hot corner so taps/clicks always hit this window (works with touch when other apps are on top).
+        /// </summary>
+        private sealed class HotCornerOverlayForm : Form
+        {
+            private readonly Control _invokeTarget;
+            private readonly Action _onActivated;
+            private int _cornerIndex;
+            private int _sizePx;
+
+            public HotCornerOverlayForm(Control invokeTarget, Action onActivated)
+            {
+                _invokeTarget = invokeTarget ?? throw new ArgumentNullException(nameof(invokeTarget));
+                _onActivated = onActivated ?? throw new ArgumentNullException(nameof(onActivated));
+                FormBorderStyle = FormBorderStyle.None;
+                ShowInTaskbar = false;
+                TopMost = true;
+                StartPosition = FormStartPosition.Manual;
+                Opacity = 0.01;
+                BackColor = Color.Black;
+                Size = new Size(1, 1);
+                _cornerIndex = 0;
+                _sizePx = 50;
+
+                MouseEnter += (s, e) => FireExit();
+                MouseDown += (s, e) => FireExit();
+                Click += (s, e) => FireExit();
+            }
+
+            public void UpdatePosition(int cornerIndex, int sizePx)
+            {
+                _cornerIndex = cornerIndex;
+                _sizePx = sizePx;
+                var screen = Screen.PrimaryScreen;
+                if (screen == null) return;
+                Rectangle b = screen.Bounds;
+                Size = new Size(_sizePx, _sizePx);
+                switch (_cornerIndex)
+                {
+                    case 0: Location = new Point(b.Left, b.Top); break;
+                    case 1: Location = new Point(b.Right - _sizePx, b.Top); break;
+                    case 2: Location = new Point(b.Left, b.Bottom - _sizePx); break;
+                    case 3: Location = new Point(b.Right - _sizePx, b.Bottom - _sizePx); break;
+                    default: Location = new Point(b.Left, b.Top); break;
+                }
+            }
+
+            private void FireExit()
+            {
+                if (!RestrictedState.IsRestrictedMode) return;
+                if (_invokeTarget.IsDisposed) return;
+                if (_invokeTarget.InvokeRequired)
+                    _invokeTarget.BeginInvoke(new Action(_onActivated));
+                else
+                    _onActivated();
+            }
         }
     }
 }
