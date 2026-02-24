@@ -6,7 +6,7 @@ using System.Windows.Forms;
 namespace RestrictedMode
 {
     /// <summary>
-    /// Low-level Keyboard Hook - chặn phím tắt toàn cục (ví dụ: Alt+Tab, Win, Ctrl+Esc).
+    /// Low-level keyboard hook; blocks global shortcuts (e.g. Alt+Tab, Win, Ctrl+Esc).
     /// </summary>
     public class KeyboardHook : IDisposable
     {
@@ -55,7 +55,7 @@ namespace RestrictedMode
         private bool _disposed;
 
         /// <summary>
-        /// Sự kiện khi có phím được nhấn (trước khi quyết định chặn). Return true để chặn phím.
+        /// Raised on key press before block decision; return true to block the key.
         /// </summary>
         public event Func<Keys, bool> KeyIntercept;
 
@@ -66,16 +66,16 @@ namespace RestrictedMode
         }
 
         /// <summary>
-        /// Các phím default bị chặn.
+        /// Blocks default restricted keys (L/R Win).
         /// </summary>
         public void BlockDefaultRestrictedKeys()
         {
-            BlockKey(Keys.LWin);        // Windows trái (mở Start / tổ hợp Win+...)
-            BlockKey(Keys.RWin);        // Windows phải
+            BlockKey(Keys.LWin);
+            BlockKey(Keys.RWin);
         }
 
         /// <summary>
-        /// Chặn một phím theo Keys.
+        /// Blocks a key.
         /// </summary>
         public void BlockKey(Keys key)
         {
@@ -84,7 +84,7 @@ namespace RestrictedMode
         }
 
         /// <summary>
-        /// Bỏ chặn một phím.
+        /// Unblocks a key.
         /// </summary>
         public void UnblockKey(Keys key)
         {
@@ -93,7 +93,7 @@ namespace RestrictedMode
         }
 
         /// <summary>
-        /// Cài đặt hook và bắt đầu chặn phím.
+        /// Installs hook and starts blocking keys.
         /// </summary>
         public void Install()
         {
@@ -106,12 +106,12 @@ namespace RestrictedMode
             if (_hookId == IntPtr.Zero)
             {
                 int err = Marshal.GetLastWin32Error();
-                throw new InvalidOperationException($"Không thể cài đặt keyboard hook. Error: {err}");
+                throw new InvalidOperationException($"Failed to install keyboard hook. Error: {err}");
             }
         }
 
         /// <summary>
-        /// Gỡ hook và dừng chặn phím.
+        /// Uninstalls hook and stops blocking.
         /// </summary>
         public void Uninstall()
         {
@@ -133,15 +133,13 @@ namespace RestrictedMode
                 if (RestrictedState.CheckAndTriggerExit(key))
                     return CallNextHookEx(_hookId, nCode, wParam, lParam);
 
-                // Trạng thái phím modifier (chỉ cần đọc một lần)
                 const int KeyPressed = 0x8000;
                 bool altDown = (GetAsyncKeyState((int)Keys.LMenu) & KeyPressed) != 0 || (GetAsyncKeyState((int)Keys.RMenu) & KeyPressed) != 0;
                 bool ctrlDown = (GetAsyncKeyState((int)Keys.LControlKey) & KeyPressed) != 0 || (GetAsyncKeyState((int)Keys.RControlKey) & KeyPressed) != 0;
                 bool shiftDown = (GetAsyncKeyState((int)Keys.LShiftKey) & KeyPressed) != 0 || (GetAsyncKeyState((int)Keys.RShiftKey) & KeyPressed) != 0;
 
-                // Các tổ hợp phím bị chặn (liệt kê rõ ràng)
                 bool keyInterceptWantsBlock = KeyIntercept != null && KeyIntercept(key);
-                bool isBlockedKey = _blockedKeys.Contains(key) || _blockedVirtualKeys.Contains((int)hookStruct.vkCode);  // Win trái/phải
+                bool isBlockedKey = _blockedKeys.Contains(key) || _blockedVirtualKeys.Contains((int)hookStruct.vkCode);
                 bool isAltTab = key == Keys.Tab && altDown;
                 bool isAltF4 = key == Keys.F4 && altDown;
                 bool isCtrlEsc = key == Keys.Escape && ctrlDown;

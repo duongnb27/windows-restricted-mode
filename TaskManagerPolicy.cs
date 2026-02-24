@@ -4,8 +4,7 @@ using Microsoft.Win32;
 namespace RestrictedMode
 {
     /// <summary>
-    /// Vô hiệu hóa / bật lại Task Manager cho user hiện tại qua registry.
-    /// Đường dẫn: HKEY_CURRENT_USER\...\Policies\System, value DisableTaskMgr.
+    /// Enable/disable Task Manager for current user via registry (HKCU\...\Policies\System, DisableTaskMgr).
     /// </summary>
     public static class TaskManagerPolicy
     {
@@ -13,9 +12,9 @@ namespace RestrictedMode
         private const string ValueName = "DisableTaskMgr";
 
         /// <summary>
-        /// Vô hiệu hóa Task Manager (Ctrl+Shift+Esc / Ctrl+Alt+Del → Task Manager sẽ bị disable).
+        /// Disables Task Manager.
         /// </summary>
-        /// <returns>True nếu thành công.</returns>
+        /// <returns>True if successful.</returns>
         public static bool Disable()
         {
             try
@@ -31,7 +30,6 @@ namespace RestrictedMode
             }
             catch (UnauthorizedAccessException)
             {
-                // Cần quyền ghi registry (thường vẫn được với HKEY_CURRENT_USER)
                 return false;
             }
             catch (Exception)
@@ -43,9 +41,9 @@ namespace RestrictedMode
         }
 
         /// <summary>
-        /// Bật lại Task Manager.
+        /// Re-enables Task Manager.
         /// </summary>
-        /// <returns>True nếu thành công.</returns>
+        /// <returns>True if successful.</returns>
         public static bool Enable()
         {
             try
@@ -68,7 +66,7 @@ namespace RestrictedMode
         }
 
         /// <summary>
-        /// Kiểm tra Task Manager có đang bị disable không.
+        /// Returns true if Task Manager is currently disabled.
         /// </summary>
         public static bool IsDisabled()
         {

@@ -7,17 +7,23 @@ using System.Linq;
 namespace RestrictedMode
 {
     /// <summary>
-    /// Cấu hình một tiến trình exe cần chạy liên tục (nếu bị tắt sẽ được khởi động lại).
+    /// Config for one process to keep running (restarted if killed).
     /// </summary>
     public class WatchDogEntry
     {
-        /// <summary>Đường dẫn đầy đủ tới file .exe</summary>
+        /// <summary>
+        /// Full path to .exe
+        /// </summary>
         public string ExePath { get; set; }
 
-        /// <summary>Tham số dòng lệnh (tùy chọn)</summary>
+        /// <summary>
+        /// Command-line arguments (optional)
+        /// </summary>
         public string Arguments { get; set; }
 
-        /// <summary>Thư mục làm việc khi chạy (null = dùng thư mục chứa exe)</summary>
+        /// <summary>
+        /// Working directory (null = exe folder)
+        /// </summary>
         public string WorkingDirectory { get; set; }
 
         public WatchDogEntry(string exePath, string arguments = null, string workingDirectory = null)
@@ -27,14 +33,15 @@ namespace RestrictedMode
             WorkingDirectory = workingDirectory;
         }
 
-        /// <summary>Tên tiến trình (không có .exe) dùng để kiểm tra còn chạy không.</summary>
+        /// <summary>
+        /// Process name (no .exe) for run check.
+        /// </summary>
         public string ProcessName => Path.GetFileNameWithoutExtension(ExePath);
     }
 
     /// <summary>
-    /// Watchdog: kiểm tra định kỳ các tiến trình exe cần chạy liên tục.
-    /// Nếu phát hiện tiến trình bị tắt thì tự động khởi động lại.
-    /// Chỉ hoạt động khi <see cref="RestrictedState.IsRestrictedMode"/> = true.
+    /// Watchdog: periodically checks processes and restarts them if killed.
+    /// Active only when <see cref="RestrictedState.IsRestrictedMode"/> is true.
     /// </summary>
     public class ServicesWatchDog
     {
@@ -43,16 +50,22 @@ namespace RestrictedMode
         private readonly object _lock = new object();
         private bool _running;
 
-        /// <summary>Chu kỳ kiểm tra (ms). Mặc định 5000 (5 giây).</summary>
+        /// <summary>
+        /// Check interval in ms (default 5000).
+        /// </summary>
         public int CheckIntervalMs { get; set; } = 5000;
 
-        /// <summary>Sự kiện khi khởi động lại một tiến trình (để log/debug).</summary>
+        /// <summary>
+        /// Raised when a process is restarted (for log/debug).
+        /// </summary>
         public event Action<WatchDogEntry, Exception> ProcessRestarted;
 
-        /// <summary>Thêm một exe cần theo dõi và tự khởi động lại nếu bị tắt.</summary>
-        /// <param name="exePath">Đường dẫn đầy đủ tới file .exe</param>
-        /// <param name="arguments">Tham số dòng lệnh (tùy chọn)</param>
-        /// <param name="workingDirectory">Thư mục làm việc (null = thư mục chứa exe)</param>
+        /// <summary>
+        /// Adds an exe to watch; restarts if killed.
+        /// </summary>
+        /// <param name="exePath">Full path to .exe</param>
+        /// <param name="arguments">Command-line args (optional)</param>
+        /// <param name="workingDirectory">Working dir (null = exe folder)</param>
         public void AddProcess(string exePath, string arguments = null, string workingDirectory = null)
         {
             if (string.IsNullOrWhiteSpace(exePath)) return;
@@ -62,7 +75,9 @@ namespace RestrictedMode
             }
         }
 
-        /// <summary>Thêm một entry đã cấu hình.</summary>
+        /// <summary>
+        /// Adds a pre-configured entry.
+        /// </summary>
         public void AddProcess(WatchDogEntry entry)
         {
             if (entry == null) return;
@@ -72,7 +87,9 @@ namespace RestrictedMode
             }
         }
 
-        /// <summary>Xóa tất cả danh sách tiến trình theo dõi.</summary>
+        /// <summary>
+        /// Clears all watched processes.
+        /// </summary>
         public void Clear()
         {
             lock (_lock)
@@ -81,7 +98,9 @@ namespace RestrictedMode
             }
         }
 
-        /// <summary>Bắt đầu watchdog (chỉ kiểm tra khi đang ở restricted mode).</summary>
+        /// <summary>
+        /// Starts watchdog (checks only in restricted mode).
+        /// </summary>
         public void Start()
         {
             if (_timer != null) return;
@@ -92,7 +111,9 @@ namespace RestrictedMode
             _timer.Start();
         }
 
-        /// <summary>Dừng watchdog.</summary>
+        /// <summary>
+        /// Stops watchdog.
+        /// </summary>
         public void Stop()
         {
             _running = false;
@@ -133,7 +154,6 @@ namespace RestrictedMode
             var processes = Process.GetProcessesByName(name);
             try
             {
-                // Có thể có nhiều process cùng tên; nếu cần chặt chẽ hơn thì so sánh đường dẫn exe
                 return processes != null && processes.Length > 0;
             }
             finally
@@ -147,7 +167,7 @@ namespace RestrictedMode
         {
             if (string.IsNullOrWhiteSpace(entry.ExePath) || !File.Exists(entry.ExePath))
             {
-                ProcessRestarted?.Invoke(entry, new FileNotFoundException("Không tìm thấy file exe.", entry.ExePath));
+                ProcessRestarted?.Invoke(entry, new FileNotFoundException("Exe file not found.", entry.ExePath));
                 return;
             }
 

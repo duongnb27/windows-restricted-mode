@@ -7,7 +7,7 @@ using System.Web.Script.Serialization;
 namespace RestrictedMode
 {
     /// <summary>
-    /// Cấu hình tổ hợp phím thoát restricted (lưu dạng tên phím string).
+    /// Exit hotkey config (key name as string).
     /// </summary>
     public class ExitHotkeyConfig
     {
@@ -18,7 +18,7 @@ namespace RestrictedMode
     }
 
     /// <summary>
-    /// Một tiến trình trong watchdog (cho serialization).
+    /// Single watchdog process entry (for serialization).
     /// </summary>
     public class WatchDogProcessConfig
     {
@@ -28,7 +28,7 @@ namespace RestrictedMode
     }
 
     /// <summary>
-    /// Cấu hình watchdog.
+    /// Watchdog config.
     /// </summary>
     public class WatchDogConfig
     {
@@ -37,18 +37,20 @@ namespace RestrictedMode
     }
 
     /// <summary>
-    /// Cấu hình toàn bộ ứng dụng restricted.
+    /// Full restricted-mode app config.
     /// </summary>
     public class AppConfig
     {
         public ExitHotkeyConfig ExitHotkey { get; set; } = new ExitHotkeyConfig();
         public WatchDogConfig WatchDog { get; set; } = new WatchDogConfig();
-        /// <summary>Mật khẩu để thoát Restricted Mode (để trống là không yêu cầu).</summary>
+        /// <summary>
+        /// Password to exit Restricted Mode (empty = not required).
+        /// </summary>
         public string RestrictedPassword { get; set; }
     }
 
     /// <summary>
-    /// Đọc/ghi config từ config.json cùng thư mục exe; nội dung file được mã hóa bằng key hardcode.
+    /// Load/save config from config.json (next to exe); file content is AES-encrypted.
     /// </summary>
     public static class ConfigManager
     {
@@ -58,7 +60,7 @@ namespace RestrictedMode
 
         static ConfigManager()
         {
-            // Key hardcode: 32 bytes cho AES-256, 16 bytes cho IV
+            // AES-256: 32-byte key, 16-byte IV
             byte[] keyBytes = Encoding.UTF8.GetBytes("RestrictedModeConfig32BytesKey!!123456");
             byte[] ivBytes = Encoding.UTF8.GetBytes("RestrictedModeIV16!!");
             Key = new byte[32];
@@ -67,10 +69,14 @@ namespace RestrictedMode
             Array.Copy(ivBytes, Iv, Math.Min(16, ivBytes.Length));
         }
 
-        /// <summary>Đường dẫn file config (cùng thư mục với exe).</summary>
+        /// <summary>
+        /// Config file path (same folder as exe).
+        /// </summary>
         public static string ConfigPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json");
 
-        /// <summary>Đọc config từ file (giải mã nếu file tồn tại), nếu lỗi hoặc không có file thì trả về config mặc định.</summary>
+        /// <summary>
+        /// Loads config from file (decrypts if exists); returns default on error or missing file.
+        /// </summary>
         public static AppConfig Load()
         {
             try
@@ -89,7 +95,9 @@ namespace RestrictedMode
             }
         }
 
-        /// <summary>Ghi config ra file (mã hóa).</summary>
+        /// <summary>
+        /// Saves config to file (encrypted).
+        /// </summary>
         public static void Save(AppConfig config)
         {
             if (config == null) return;
@@ -102,7 +110,9 @@ namespace RestrictedMode
             catch { /* ignore */ }
         }
 
-        /// <summary>Config mặc định.</summary>
+        /// <summary>
+        /// Default config.
+        /// </summary>
         public static AppConfig GetDefault()
         {
             return new AppConfig

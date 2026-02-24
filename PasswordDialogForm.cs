@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace RestrictedMode
 {
     /// <summary>
-    /// Dialog nhập mật khẩu — ô ẩn với nút con mắt để hiển thị/ẩn.
+    /// Password input dialog with show/hide toggle.
     /// </summary>
     public partial class PasswordDialogForm : Form
     {

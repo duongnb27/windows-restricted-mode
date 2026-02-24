@@ -11,7 +11,9 @@ namespace RestrictedMode
         private KeyboardHook _keyboardHook;
         private ServicesWatchDog _watchDog;
         private AppConfig _config;
-        /// <summary>Chỉ khi true mới cho form hiện (khi thoát Restricted). Chặn form hiện mọi lúc đang Restricted.</summary>
+        /// <summary>
+        /// When true, form can show (after exit); blocked while restricted.
+        /// </summary>
         private bool _allowShowForm;
         private bool _initialLoadDone;
         private static readonly string[] ExitKeyNames = { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "Escape", "Tab", "Pause" };
@@ -22,7 +24,6 @@ namespace RestrictedMode
             ShowInTaskbar = false;
             _allowShowForm = false;
             RestrictedState.EnterRestrictedMode();
-            // Ép tạo handle (không show form) để OnHandleCreated chạy; sau đó BeginInvoke mới dùng được.
             CreateHandle();
         }
 
@@ -35,7 +36,6 @@ namespace RestrictedMode
 
         protected override void SetVisibleCore(bool value)
         {
-            // Đang Restricted và chưa cho phép show (thoát Restricted) → chặn hẳn, không cho form hiện (kể cả lần đầu từ Run).
             if (value && RestrictedState.IsRestrictedMode && !_allowShowForm)
                 value = false;
             base.SetVisibleCore(value);
@@ -48,7 +48,9 @@ namespace RestrictedMode
             InitialLoadAndStartRestricted();
         }
 
-        /// <summary>Load config, gắn sự kiện, và vào Restricted. Chỉ chạy một lần (form chạy ngầm nên OnLoad có thể không gọi).</summary>
+        /// <summary>
+        /// Loads config, subscribes events, enters restricted. Runs once (form may run hidden so OnLoad might not run).
+        /// </summary>
         private void InitialLoadAndStartRestricted()
         {
             if (_initialLoadDone) return;
@@ -148,7 +150,9 @@ namespace RestrictedMode
             StartRestricted();
         }
 
-        /// <summary>Áp dụng config hiện tại và vào Restricted (không yêu cầu mật khẩu khi bắt đầu).</summary>
+        /// <summary>
+        /// Applies current config and enters restricted (no password on start).
+        /// </summary>
         private void StartRestricted()
         {
             _allowShowForm = false;

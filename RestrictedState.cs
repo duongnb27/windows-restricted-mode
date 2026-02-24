@@ -5,8 +5,7 @@ using System.Windows.Forms;
 namespace RestrictedMode
 {
     /// <summary>
-    /// Trạng thái toàn cục của restricted mode và xử lý thoát bằng tổ hợp phím tùy chỉnh.
-    /// Mặc định: Ctrl+Shift+F12. Sau khi thoát, tất cả chức năng chặn phím sẽ tắt.
+    /// Global restricted mode state and custom exit hotkey (default Ctrl+Shift+F12).
     /// </summary>
     public static class RestrictedState
     {
@@ -20,35 +19,32 @@ namespace RestrictedMode
         #endregion
 
         /// <summary>
-        /// Biến toàn cục: true = đang ở Restricted Mode (chặn phím, v.v.), false = đã thoát, mọi chức năng tắt.
-        /// Mặc định false khi khởi động app để form cấu hình hiển thị; chỉ thành true khi gọi EnterRestrictedMode().
+        /// True while in restricted mode (key blocking etc.); false after exit.
         /// </summary>
         public static bool IsRestrictedMode { get; private set; } = false;
 
         /// <summary>
-        /// Sự kiện khi người dùng nhấn tổ hợp thoát và restricted mode được tắt.
-        /// Form/hook nên đăng ký để Uninstall hook và tắt các chức năng khác.
+        /// Raised when restricted mode exits; form/hook should uninstall and clean up.
         /// </summary>
         public static event Action RestrictedModeExited;
 
         /// <summary>
-        /// Sự kiện khi user nhấn tổ hợp thoát — Form cần hiện ô nhập mật khẩu, nếu đúng mới gọi ConfirmExitRestricted() và tắt restricted.
+        /// Raised when exit hotkey is pressed; form shows password dialog, then calls ConfirmExitRestricted() if correct.
         /// </summary>
         public static event Action ExitRestrictedRequested;
 
-        // Tổ hợp phím thoát (mặc định Ctrl+Shift+F12)
         private static Keys _exitKey = Keys.F12;
         private static bool _exitCtrl = true;
         private static bool _exitShift = true;
         private static bool _exitAlt = false;
 
         /// <summary>
-        /// Cấu hình tổ hợp phím thoát restricted mode.
+        /// Sets exit hotkey.
         /// </summary>
-        /// <param name="key">Phím chính (mặc định F12)</param>
-        /// <param name="ctrl">Bắt buộc giữ Ctrl</param>
-        /// <param name="shift">Bắt buộc giữ Shift</param>
-        /// <param name="alt">Bắt buộc giữ Alt</param>
+        /// <param name="key">Main key (default F12)</param>
+        /// <param name="ctrl">Require Ctrl</param>
+        /// <param name="shift">Require Shift</param>
+        /// <param name="alt">Require Alt</param>
         public static void SetExitHotkey(Keys key, bool ctrl = true, bool shift = true, bool alt = false)
         {
             _exitKey = key;
@@ -58,7 +54,7 @@ namespace RestrictedMode
         }
 
         /// <summary>
-        /// Đặt lại tổ hợp mặc định: Ctrl+Shift+F12.
+        /// Resets to default: Ctrl+Shift+F12.
         /// </summary>
         public static void SetDefaultExitHotkey()
         {
@@ -66,7 +62,7 @@ namespace RestrictedMode
         }
 
         /// <summary>
-        /// Áp dụng tổ hợp thoát từ config (dùng khi load config.json).
+        /// Applies exit hotkey from config (e.g. after loading config.json).
         /// </summary>
         public static void ApplyExitHotkeyConfig(ExitHotkeyConfig c)
         {
@@ -78,9 +74,7 @@ namespace RestrictedMode
         }
 
         /// <summary>
-        /// Gọi từ keyboard hook khi có phím key down. Trả về true nếu đây là tổ hợp thoát
-        /// và đã kích hoạt thoát (đã set IsRestrictedMode = false và raise RestrictedModeExited).
-        /// Khi đó hook không nên chặn phím này.
+        /// Called from keyboard hook on key down. Returns true if exit hotkey matched and exit was triggered (hook should not block).
         /// </summary>
         public static bool CheckAndTriggerExit(Keys key)
         {
@@ -97,13 +91,12 @@ namespace RestrictedMode
             if (ctrlDown != _exitCtrl || shiftDown != _exitShift || altDown != _exitAlt)
                 return false;
 
-            // Yêu cầu Form hiện dialog mật khẩu; chỉ khi đúng mới gọi ConfirmExitRestricted()
             ExitRestrictedRequested?.Invoke();
             return true;
         }
 
         /// <summary>
-        /// Gọi sau khi nhập đúng mật khẩu thoát — thực sự tắt restricted và raise RestrictedModeExited.
+        /// Call after correct password; turns off restricted mode and raises RestrictedModeExited.
         /// </summary>
         public static void ConfirmExitRestricted()
         {
@@ -112,7 +105,7 @@ namespace RestrictedMode
         }
 
         /// <summary>
-        /// Bật lại restricted mode (dùng nếu sau này có nút "Vào restricted").
+        /// Enters restricted mode.
         /// </summary>
         public static void EnterRestrictedMode()
         {

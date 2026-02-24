@@ -1,17 +1,23 @@
 namespace RestrictedMode
 {
     /// <summary>
-    /// Setup font chữ / cỡ chữ toàn ứng dụng — chỉnh tại đây để áp dụng cho tất cả form.
+    /// App-wide font family and sizes.
     /// </summary>
     public static class UIFonts
     {
-        /// <summary>Tên font (ví dụ: Segoe UI, Tahoma).</summary>
+        /// <summary>
+        /// Font family (e.g. Segoe UI).
+        /// </summary>
         public const string Family = "Segoe UI";
 
-        /// <summary>Cỡ chữ bình thường (label, textbox, nút nhỏ...).</summary>
+        /// <summary>
+        /// Normal size (labels, textboxes, small buttons).
+        /// </summary>
         public const float SizeNormal = 10F;
 
-        /// <summary>Cỡ chữ nút lớn (Lưu cấu hình, Bắt đầu Restricted).</summary>
+        /// <summary>
+        /// Large button font size.
+        /// </summary>
         public const float SizeButtonLarge = 12F;
     }
 }
