@@ -1,1 +1,1 @@
-Run the following scripts if needed
+# Run the following scripts if needed
