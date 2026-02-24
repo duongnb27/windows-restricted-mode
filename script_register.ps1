@@ -1,22 +1,22 @@
-# 1. Khai báo thông tin ứng dụng
+# 1. Application info
 $AppName = "RestrictedMode" 
-$ExePath = "C:\Path\To\Your\RestrictedMode.exe" # <-- HÃY THAY ĐƯỜNG DẪN THỰC TẾ TẠI ĐÂY
+$ExePath = "C:\Path\To\Your\RestrictedMode.exe" # <-- SET THE ACTUAL PATH HERE
 $TaskName = "Launch_$AppName"
 
-# 2. Thiết lập Trigger: Tự động chạy khi người dùng đăng nhập (Logon)
+# 2. Trigger: run when user logs on
 $Trigger = New-ScheduledTaskTrigger -AtLogon
 
-# 3. Tạo Action và các thiết lập quyền cao nhất
+# 3. Action and highest-privilege settings
 $Action = New-ScheduledTaskAction -Execute $ExePath
-$Principal = New-ScheduledTaskPrincipal -LogonType Interactive -RunLevel Highest
+$Principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Highest
 $Settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -Priority 0
 
-# 4. Đăng ký Task vào hệ thống (Nếu đã có thì sẽ ghi đè - Force)
+# 4. Register task (overwrites if exists - Force)
 Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings -Force
 
-Write-Host "--- Da thiet lap RestrictedMode tu dong chay cung Windows (Admin) ---" -ForegroundColor Green
+Write-Host "--- RestrictedMode is set to run with Windows (Admin) ---" -ForegroundColor Green
 
-# 5. Tạo Shortcut ngoai Desktop (Tùy chọn, để bạn mở thủ công khi cần)
+# 5. Create Desktop shortcut (optional, for manual launch)
 $WshShell = New-Object -ComObject WScript.Shell
 $ShortcutPath = [System.IO.Path]::Combine([Environment]::GetFolderPath("Desktop"), "$AppName.lnk")
 $Shortcut = $WshShell.CreateShortcut($ShortcutPath)
