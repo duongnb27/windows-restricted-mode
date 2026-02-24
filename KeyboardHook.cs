@@ -52,7 +52,6 @@ namespace RestrictedMode
         private LowLevelKeyboardProc _proc;
         private readonly HashSet<Keys> _blockedKeys = new HashSet<Keys>();
         private readonly HashSet<int> _blockedVirtualKeys = new HashSet<int>();
-        private bool _blockAllSysKeys;
         private bool _disposed;
 
         /// <summary>
@@ -67,19 +66,12 @@ namespace RestrictedMode
         }
 
         /// <summary>
-        /// Thêm danh sách phím tắt mặc định thường dùng để thoát restricted.
+        /// Các phím default bị chặn.
         /// </summary>
         public void BlockDefaultRestrictedKeys()
         {
-            BlockKey(Keys.LMenu);       // Alt trái
-            BlockKey(Keys.RMenu);       // Alt phải
-            BlockKey(Keys.LWin);        // Windows trái
+            BlockKey(Keys.LWin);        // Windows trái (mở Start / tổ hợp Win+...)
             BlockKey(Keys.RWin);        // Windows phải
-            BlockKey(Keys.Escape);      // Esc (có thể bỏ nếu cần)
-            BlockKey(Keys.Tab);         // Tab (kết hợp Alt+Tab)
-            BlockKey(Keys.F4);          // Alt+F4
-            BlockKey(Keys.Apps);        // Menu key (phím Application)
-            _blockAllSysKeys = true;    // Chặn tổ hợp có Alt (SysKey)
         }
 
         /// <summary>
@@ -98,14 +90,6 @@ namespace RestrictedMode
         {
             _blockedKeys.Remove(key);
             _blockedVirtualKeys.Remove((int)key);
-        }
-
-        /// <summary>
-        /// Bật/tắt chặn mọi SysKey (tổ hợp có Alt).
-        /// </summary>
-        public void SetBlockAllSysKeys(bool block)
-        {
-            _blockAllSysKeys = block;
         }
 
         /// <summary>
@@ -140,43 +124,37 @@ namespace RestrictedMode
         {
             if (nCode >= 0 && (wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN))
             {
-                // Nếu không ở restricted mode thì không chặn phím nào
                 if (!RestrictedState.IsRestrictedMode)
                     return CallNextHookEx(_hookId, nCode, wParam, lParam);
 
                 var hookStruct = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(KBDLLHOOKSTRUCT));
                 var key = (Keys)hookStruct.vkCode;
 
-                // Tổ hợp thoát restricted → không chặn, đã tắt IsRestrictedMode trong RestrictedState
                 if (RestrictedState.CheckAndTriggerExit(key))
                     return CallNextHookEx(_hookId, nCode, wParam, lParam);
 
-                bool shouldBlock = false;
+                // Trạng thái phím modifier (chỉ cần đọc một lần)
+                const int KeyPressed = 0x8000;
+                bool altDown = (GetAsyncKeyState((int)Keys.LMenu) & KeyPressed) != 0 || (GetAsyncKeyState((int)Keys.RMenu) & KeyPressed) != 0;
+                bool ctrlDown = (GetAsyncKeyState((int)Keys.LControlKey) & KeyPressed) != 0 || (GetAsyncKeyState((int)Keys.RControlKey) & KeyPressed) != 0;
+                bool shiftDown = (GetAsyncKeyState((int)Keys.LShiftKey) & KeyPressed) != 0 || (GetAsyncKeyState((int)Keys.RShiftKey) & KeyPressed) != 0;
 
-                // 1. Kiểm tra event tùy chỉnh (return true = chặn phím)
-                if (KeyIntercept != null && KeyIntercept(key))
-                    shouldBlock = true;
+                // Các tổ hợp phím bị chặn (liệt kê rõ ràng)
+                bool keyInterceptWantsBlock = KeyIntercept != null && KeyIntercept(key);
+                bool isBlockedKey = _blockedKeys.Contains(key) || _blockedVirtualKeys.Contains((int)hookStruct.vkCode);  // Win trái/phải
+                bool isAltTab = key == Keys.Tab && altDown;
+                bool isAltF4 = key == Keys.F4 && altDown;
+                bool isCtrlEsc = key == Keys.Escape && ctrlDown;
+                bool isCtrlShiftDelete = key == Keys.Delete && ctrlDown && shiftDown;
+                bool isCtrlAltDelete = key == Keys.Delete && ctrlDown && altDown;
 
-                // 2. Chặn SysKey (Alt+...) nếu bật
-                if (!shouldBlock && _blockAllSysKeys && (wParam == (IntPtr)WM_SYSKEYDOWN))
-                    shouldBlock = true;
-
-                // 3. Chặn phím nằm trong danh sách
-                if (!shouldBlock && (_blockedKeys.Contains(key) || _blockedVirtualKeys.Contains((int)hookStruct.vkCode)))
-                    shouldBlock = true;
-
-                // 4. Chặn Ctrl+Esc (mở Start menu)
-                if (!shouldBlock && key == Keys.Escape && (GetAsyncKeyState((int)Keys.LControlKey) != 0 || GetAsyncKeyState((int)Keys.RControlKey) != 0))
-                    shouldBlock = true;
-
-                // 5. Chặn Ctrl+Shift+Delete (thường mở Task Manager / Security)
-                if (!shouldBlock && key == Keys.Delete)
-                {
-                    bool ctrl = (GetAsyncKeyState((int)Keys.LControlKey) & 0x8000) != 0 || (GetAsyncKeyState((int)Keys.RControlKey) & 0x8000) != 0;
-                    bool shift = (GetAsyncKeyState((int)Keys.LShiftKey) & 0x8000) != 0 || (GetAsyncKeyState((int)Keys.RShiftKey) & 0x8000) != 0;
-                    if (ctrl && shift)
-                        shouldBlock = true;
-                }
+                bool shouldBlock = keyInterceptWantsBlock
+                    || isBlockedKey
+                    || isAltTab
+                    || isAltF4
+                    || isCtrlEsc
+                    || isCtrlShiftDelete
+                    || isCtrlAltDelete;
 
                 if (shouldBlock)
                     return (IntPtr)1;
