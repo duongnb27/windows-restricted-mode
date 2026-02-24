@@ -120,6 +120,9 @@ namespace RestrictedMode
                     }
                 }
             }
+
+            chkHideTaskbar.Checked = c.UtilityHideTaskbar;
+            chkHideStartMenu.Checked = c.UtilityHideStartMenu;
         }
 
         private void UIToConfig()
@@ -150,6 +153,8 @@ namespace RestrictedMode
             _config.ExitHotCornerEnabled = chkHotCornerEnabled.Checked;
             _config.ExitHotCornerCorner = cboHotCornerPosition.SelectedIndex >= 0 ? Math.Min(3, cboHotCornerPosition.SelectedIndex) : 0;
             _config.ExitHotCornerSizePx = (int)numHotCornerSize.Value;
+            _config.UtilityHideTaskbar = chkHideTaskbar.Checked;
+            _config.UtilityHideStartMenu = chkHideStartMenu.Checked;
         }
 
         private void btnShowPassword_Click(object sender, EventArgs e)
@@ -202,6 +207,11 @@ namespace RestrictedMode
                 _exitHotCorners = new ExitHotCorners(this);
             _exitHotCorners.Start(_config.ExitHotCornerEnabled, _config.ExitHotCornerCorner, _config.ExitHotCornerSizePx);
 
+            if (_config.UtilityHideStartMenu)
+                StartMenuPolicy.Hide();
+            if (_config.UtilityHideTaskbar)
+                TaskbarPolicy.Hide();
+
             Hide();
         }
 
@@ -248,6 +258,13 @@ namespace RestrictedMode
             _exitHotCorners?.Stop();
             _keyboardHook?.Uninstall();
             TaskManagerPolicy.Enable();
+            if (_config != null)
+            {
+                if (_config.UtilityHideTaskbar)
+                    TaskbarPolicy.Show();
+                if (_config.UtilityHideStartMenu)
+                    StartMenuPolicy.Show();
+            }
             _watchDog?.Stop();
             _allowShowForm = true;
             ShowInTaskbar = true;
@@ -301,6 +318,8 @@ namespace RestrictedMode
             RestrictedState.RestrictedModeExited -= OnRestrictedModeExited;
             RestrictedState.ExitRestrictedRequested -= OnExitRestrictedRequested;
             TaskManagerPolicy.Enable();
+            TaskbarPolicy.Show();
+            StartMenuPolicy.Show();
             _watchDog?.Stop();
             UIToConfig();
             if (_config != null)

@@ -71,6 +71,8 @@
     <Compile Include="RestrictedState.cs" />
     <Compile Include="ServicesWatchDog.cs" />
     <Compile Include="TaskManagerPolicy.cs" />
+    <Compile Include="StartMenuPolicy.cs" />
+    <Compile Include="TaskbarPolicy.cs" />
     <Compile Include="UIFonts.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

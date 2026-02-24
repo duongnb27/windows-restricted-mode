@@ -42,12 +42,16 @@ namespace RestrictedMode
             this.cboHotCornerPosition = new System.Windows.Forms.ComboBox();
             this.lblHotCornerSize = new System.Windows.Forms.Label();
             this.numHotCornerSize = new System.Windows.Forms.NumericUpDown();
+            this.grpUtility = new System.Windows.Forms.GroupBox();
+            this.chkHideTaskbar = new System.Windows.Forms.CheckBox();
+            this.chkHideStartMenu = new System.Windows.Forms.CheckBox();
             this.grpHotkey.SuspendLayout();
             this.grpWatchDog.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numIntervalSeconds)).BeginInit();
             this.grpPassword.SuspendLayout();
             this.grpHotCorner.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numHotCornerSize)).BeginInit();
+            this.grpUtility.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpHotkey
@@ -133,7 +137,7 @@ namespace RestrictedMode
             this.grpWatchDog.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.grpWatchDog.Location = new System.Drawing.Point(12, 302);
             this.grpWatchDog.Name = "grpWatchDog";
-            this.grpWatchDog.Size = new System.Drawing.Size(800, 284);
+            this.grpWatchDog.Size = new System.Drawing.Size(800, 258);
             this.grpWatchDog.TabIndex = 1;
             this.grpWatchDog.TabStop = false;
             this.grpWatchDog.Text = "Processes to keep running";
@@ -186,7 +190,7 @@ namespace RestrictedMode
             this.lstProcesses.HideSelection = false;
             this.lstProcesses.Location = new System.Drawing.Point(13, 50);
             this.lstProcesses.Name = "lstProcesses";
-            this.lstProcesses.Size = new System.Drawing.Size(774, 196);
+            this.lstProcesses.Size = new System.Drawing.Size(774, 170);
             this.lstProcesses.TabIndex = 2;
             this.lstProcesses.UseCompatibleStateImageBehavior = false;
             this.lstProcesses.View = System.Windows.Forms.View.Details;
@@ -211,7 +215,7 @@ namespace RestrictedMode
             // 
             this.btnAddProcess.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnAddProcess.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
-            this.btnAddProcess.Location = new System.Drawing.Point(13, 254);
+            this.btnAddProcess.Location = new System.Drawing.Point(13, 228);
             this.btnAddProcess.Name = "btnAddProcess";
             this.btnAddProcess.Size = new System.Drawing.Size(75, 26);
             this.btnAddProcess.TabIndex = 3;
@@ -223,7 +227,7 @@ namespace RestrictedMode
             // 
             this.btnRemoveProcess.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnRemoveProcess.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
-            this.btnRemoveProcess.Location = new System.Drawing.Point(94, 254);
+            this.btnRemoveProcess.Location = new System.Drawing.Point(94, 228);
             this.btnRemoveProcess.Name = "btnRemoveProcess";
             this.btnRemoveProcess.Size = new System.Drawing.Size(75, 26);
             this.btnRemoveProcess.TabIndex = 4;
@@ -235,7 +239,7 @@ namespace RestrictedMode
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeButtonLarge);
-            this.btnSave.Location = new System.Drawing.Point(552, 600);
+            this.btnSave.Location = new System.Drawing.Point(552, 648);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(130, 38);
             this.btnSave.TabIndex = 2;
@@ -248,7 +252,7 @@ namespace RestrictedMode
             this.btnStartRestricted.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStartRestricted.BackColor = System.Drawing.SystemColors.ControlLight;
             this.btnStartRestricted.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeButtonLarge, System.Drawing.FontStyle.Bold);
-            this.btnStartRestricted.Location = new System.Drawing.Point(690, 600);
+            this.btnStartRestricted.Location = new System.Drawing.Point(690, 648);
             this.btnStartRestricted.Name = "btnStartRestricted";
             this.btnStartRestricted.Size = new System.Drawing.Size(122, 38);
             this.btnStartRestricted.TabIndex = 3;
@@ -352,6 +356,42 @@ namespace RestrictedMode
             0,
             0});
             // 
+            // grpUtility
+            // 
+            this.grpUtility.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpUtility.Controls.Add(this.chkHideTaskbar);
+            this.grpUtility.Controls.Add(this.chkHideStartMenu);
+            this.grpUtility.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
+            this.grpUtility.Location = new System.Drawing.Point(12, 566);
+            this.grpUtility.Name = "grpUtility";
+            this.grpUtility.Size = new System.Drawing.Size(800, 72);
+            this.grpUtility.TabIndex = 7;
+            this.grpUtility.TabStop = false;
+            this.grpUtility.Text = "Utility";
+            // 
+            // chkHideTaskbar
+            // 
+            this.chkHideTaskbar.AutoSize = true;
+            this.chkHideTaskbar.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
+            this.chkHideTaskbar.Location = new System.Drawing.Point(13, 22);
+            this.chkHideTaskbar.Name = "chkHideTaskbar";
+            this.chkHideTaskbar.Size = new System.Drawing.Size(100, 23);
+            this.chkHideTaskbar.TabIndex = 0;
+            this.chkHideTaskbar.Text = "Hide Taskbar";
+            this.chkHideTaskbar.UseVisualStyleBackColor = true;
+            // 
+            // chkHideStartMenu
+            // 
+            this.chkHideStartMenu.AutoSize = true;
+            this.chkHideStartMenu.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
+            this.chkHideStartMenu.Location = new System.Drawing.Point(13, 45);
+            this.chkHideStartMenu.Name = "chkHideStartMenu";
+            this.chkHideStartMenu.Size = new System.Drawing.Size(118, 23);
+            this.chkHideStartMenu.TabIndex = 1;
+            this.chkHideStartMenu.Text = "Hide Start Menu";
+            this.chkHideStartMenu.UseVisualStyleBackColor = true;
+            // 
             // lblPasswordHint
             // 
             this.lblPasswordHint.AutoSize = true;
@@ -386,9 +426,10 @@ namespace RestrictedMode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(824, 645);
+            this.ClientSize = new System.Drawing.Size(824, 693);
             this.Controls.Add(this.btnStartRestricted);
             this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.grpUtility);
             this.Controls.Add(this.grpWatchDog);
             this.Controls.Add(this.grpHotCorner);
             this.Controls.Add(this.grpHotkey);
@@ -408,6 +449,8 @@ namespace RestrictedMode
             this.grpHotCorner.ResumeLayout(false);
             this.grpHotCorner.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numHotCornerSize)).EndInit();
+            this.grpUtility.ResumeLayout(false);
+            this.grpUtility.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -441,5 +484,8 @@ namespace RestrictedMode
         private System.Windows.Forms.ComboBox cboHotCornerPosition;
         private System.Windows.Forms.Label lblHotCornerSize;
         private System.Windows.Forms.NumericUpDown numHotCornerSize;
+        private System.Windows.Forms.GroupBox grpUtility;
+        private System.Windows.Forms.CheckBox chkHideTaskbar;
+        private System.Windows.Forms.CheckBox chkHideStartMenu;
     }
 }

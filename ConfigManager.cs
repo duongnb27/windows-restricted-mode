@@ -52,6 +52,14 @@ namespace RestrictedMode
         /// Size of corner zone in pixels.
         /// </summary>
         public int ExitHotCornerSizePx { get; set; } = 50;
+        /// <summary>
+        /// Utility: hide taskbar on all monitors when in restricted mode.
+        /// </summary>
+        public bool UtilityHideTaskbar { get; set; } = false;
+        /// <summary>
+        /// Utility: hide Start Menu when in restricted mode.
+        /// </summary>
+        public bool UtilityHideStartMenu { get; set; } = false;
     }
 
     /// <summary>
@@ -124,7 +132,9 @@ namespace RestrictedMode
                 RestrictedPassword = null,
                 ExitHotCornerEnabled = false,
                 ExitHotCornerCorner = (int)ExitHotCornerPosition.TopLeft,
-                ExitHotCornerSizePx = 50
+                ExitHotCornerSizePx = 50,
+                UtilityHideTaskbar = false,
+                UtilityHideStartMenu = false
             };
         }
 
