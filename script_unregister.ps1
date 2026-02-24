@@ -1,3 +1,10 @@
+# Require admin: re-launch with elevation if not running as Administrator
+$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+if (-not $isAdmin) {
+    Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+    exit
+}
+
 # 1. Application info (must match script_register.ps1)
 $AppName = "RestrictedMode"
 $TaskName = "Launch_$AppName"
@@ -21,3 +28,5 @@ if (Test-Path $ShortcutPath) {
 }
 
 Write-Host "--- RestrictedMode auto-run with Windows has been unregistered ---" -ForegroundColor Green
+
+Read-Host "Press Enter to exit"

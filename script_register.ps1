@@ -1,3 +1,10 @@
+# Require admin: re-launch with elevation if not running as Administrator
+$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+if (-not $isAdmin) {
+    Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+    exit
+}
+
 # 1. Application info
 $AppName = "RestrictedMode" 
 $ExePath = "C:\Path\To\Your\RestrictedMode.exe" # <-- SET THE ACTUAL PATH HERE
@@ -25,3 +32,5 @@ $Shortcut.Arguments = "/run /tn `"$TaskName`""
 $Shortcut.IconLocation = $ExePath
 $Shortcut.WindowStyle = 7
 $Shortcut.Save()
+
+Read-Host "Press Enter to exit"
