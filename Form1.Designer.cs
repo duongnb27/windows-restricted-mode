@@ -51,7 +51,7 @@ namespace RestrictedMode
             this.grpHotkey.Controls.Add(this.chkShift);
             this.grpHotkey.Controls.Add(this.chkCtrl);
             this.grpHotkey.Controls.Add(this.lblHotkey);
-            this.grpHotkey.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.grpHotkey.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.grpHotkey.Location = new System.Drawing.Point(12, 12);
             this.grpHotkey.Name = "grpHotkey";
             this.grpHotkey.Size = new System.Drawing.Size(800, 72);
@@ -62,7 +62,7 @@ namespace RestrictedMode
             // cboExitKey
             // 
             this.cboExitKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboExitKey.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cboExitKey.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.cboExitKey.FormattingEnabled = true;
             this.cboExitKey.Location = new System.Drawing.Point(164, 40);
             this.cboExitKey.Name = "cboExitKey";
@@ -72,7 +72,7 @@ namespace RestrictedMode
             // chkAlt
             // 
             this.chkAlt.AutoSize = true;
-            this.chkAlt.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.chkAlt.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.chkAlt.Location = new System.Drawing.Point(119, 42);
             this.chkAlt.Name = "chkAlt";
             this.chkAlt.Size = new System.Drawing.Size(45, 23);
@@ -83,7 +83,7 @@ namespace RestrictedMode
             // chkShift
             // 
             this.chkShift.AutoSize = true;
-            this.chkShift.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.chkShift.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.chkShift.Location = new System.Drawing.Point(64, 42);
             this.chkShift.Name = "chkShift";
             this.chkShift.Size = new System.Drawing.Size(55, 23);
@@ -94,7 +94,7 @@ namespace RestrictedMode
             // chkCtrl
             // 
             this.chkCtrl.AutoSize = true;
-            this.chkCtrl.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.chkCtrl.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.chkCtrl.Location = new System.Drawing.Point(13, 42);
             this.chkCtrl.Name = "chkCtrl";
             this.chkCtrl.Size = new System.Drawing.Size(50, 23);
@@ -105,7 +105,7 @@ namespace RestrictedMode
             // lblHotkey
             // 
             this.lblHotkey.AutoSize = true;
-            this.lblHotkey.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblHotkey.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.lblHotkey.Location = new System.Drawing.Point(10, 22);
             this.lblHotkey.Name = "lblHotkey";
             this.lblHotkey.Size = new System.Drawing.Size(248, 19);
@@ -122,7 +122,7 @@ namespace RestrictedMode
             this.grpWatchDog.Controls.Add(this.lstProcesses);
             this.grpWatchDog.Controls.Add(this.btnAddProcess);
             this.grpWatchDog.Controls.Add(this.btnRemoveProcess);
-            this.grpWatchDog.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.grpWatchDog.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.grpWatchDog.Location = new System.Drawing.Point(12, 172);
             this.grpWatchDog.Name = "grpWatchDog";
             this.grpWatchDog.Size = new System.Drawing.Size(800, 284);
@@ -133,7 +133,7 @@ namespace RestrictedMode
             // lblInterval
             // 
             this.lblInterval.AutoSize = true;
-            this.lblInterval.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblInterval.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.lblInterval.Location = new System.Drawing.Point(10, 24);
             this.lblInterval.Name = "lblInterval";
             this.lblInterval.Size = new System.Drawing.Size(127, 19);
@@ -142,7 +142,7 @@ namespace RestrictedMode
             // 
             // numIntervalSeconds
             // 
-            this.numIntervalSeconds.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.numIntervalSeconds.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.numIntervalSeconds.Location = new System.Drawing.Point(140, 22);
             this.numIntervalSeconds.Maximum = new decimal(new int[] {
             300,
@@ -172,7 +172,7 @@ namespace RestrictedMode
             this.colExe,
             this.colArgs,
             this.colWorkDir});
-            this.lstProcesses.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lstProcesses.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.lstProcesses.FullRowSelect = true;
             this.lstProcesses.GridLines = true;
             this.lstProcesses.HideSelection = false;
@@ -202,7 +202,7 @@ namespace RestrictedMode
             // btnAddProcess
             // 
             this.btnAddProcess.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAddProcess.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnAddProcess.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.btnAddProcess.Location = new System.Drawing.Point(13, 254);
             this.btnAddProcess.Name = "btnAddProcess";
             this.btnAddProcess.Size = new System.Drawing.Size(75, 26);
@@ -214,7 +214,7 @@ namespace RestrictedMode
             // btnRemoveProcess
             // 
             this.btnRemoveProcess.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemoveProcess.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnRemoveProcess.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.btnRemoveProcess.Location = new System.Drawing.Point(94, 254);
             this.btnRemoveProcess.Name = "btnRemoveProcess";
             this.btnRemoveProcess.Size = new System.Drawing.Size(75, 26);
@@ -226,7 +226,7 @@ namespace RestrictedMode
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btnSave.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeButtonLarge);
             this.btnSave.Location = new System.Drawing.Point(552, 464);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(130, 38);
@@ -239,7 +239,7 @@ namespace RestrictedMode
             // 
             this.btnStartRestricted.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStartRestricted.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.btnStartRestricted.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnStartRestricted.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeButtonLarge, System.Drawing.FontStyle.Bold);
             this.btnStartRestricted.Location = new System.Drawing.Point(690, 464);
             this.btnStartRestricted.Name = "btnStartRestricted";
             this.btnStartRestricted.Size = new System.Drawing.Size(122, 38);
@@ -255,7 +255,7 @@ namespace RestrictedMode
             this.grpPassword.Controls.Add(this.lblPasswordHint);
             this.grpPassword.Controls.Add(this.txtRestrictedPassword);
             this.grpPassword.Controls.Add(this.btnShowPassword);
-            this.grpPassword.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.grpPassword.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.grpPassword.Location = new System.Drawing.Point(12, 90);
             this.grpPassword.Name = "grpPassword";
             this.grpPassword.Size = new System.Drawing.Size(800, 76);
@@ -266,16 +266,16 @@ namespace RestrictedMode
             // lblPasswordHint
             // 
             this.lblPasswordHint.AutoSize = true;
-            this.lblPasswordHint.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblPasswordHint.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.lblPasswordHint.Location = new System.Drawing.Point(10, 22);
             this.lblPasswordHint.Name = "lblPasswordHint";
             this.lblPasswordHint.Size = new System.Drawing.Size(399, 19);
             this.lblPasswordHint.TabIndex = 0;
-            this.lblPasswordHint.Text = "Để trống là không yêu cầu mật khẩu khi vào/thoát Restricted Mode:";
+            this.lblPasswordHint.Text = "Để trống là không yêu cầu mật khẩu khi thoát Restricted Mode:";
             // 
             // txtRestrictedPassword
             // 
-            this.txtRestrictedPassword.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtRestrictedPassword.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.txtRestrictedPassword.Location = new System.Drawing.Point(10, 46);
             this.txtRestrictedPassword.Name = "txtRestrictedPassword";
             this.txtRestrictedPassword.Size = new System.Drawing.Size(173, 25);
@@ -284,7 +284,7 @@ namespace RestrictedMode
             // 
             // btnShowPassword
             // 
-            this.btnShowPassword.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnShowPassword.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.btnShowPassword.Location = new System.Drawing.Point(189, 46);
             this.btnShowPassword.Name = "btnShowPassword";
             this.btnShowPassword.Size = new System.Drawing.Size(32, 26);
@@ -303,7 +303,7 @@ namespace RestrictedMode
             this.Controls.Add(this.grpWatchDog);
             this.Controls.Add(this.grpPassword);
             this.Controls.Add(this.grpHotkey);
-            this.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.MinimumSize = new System.Drawing.Size(500, 430);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

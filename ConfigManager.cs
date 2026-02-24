@@ -43,7 +43,7 @@ namespace RestrictedMode
     {
         public ExitHotkeyConfig ExitHotkey { get; set; } = new ExitHotkeyConfig();
         public WatchDogConfig WatchDog { get; set; } = new WatchDogConfig();
-        /// <summary>Mật khẩu để vào/thoát Restricted Mode (để trống là không yêu cầu).</summary>
+        /// <summary>Mật khẩu để thoát Restricted Mode (để trống là không yêu cầu).</summary>
         public string RestrictedPassword { get; set; }
     }
 
