@@ -6,62 +6,6 @@ using System.Web.Script.Serialization;
 
 namespace RestrictedMode
 {
-    public class ExitHotkeyConfig
-    {
-        public string Key { get; set; } = "F12";
-        public bool Ctrl { get; set; } = true;
-        public bool Shift { get; set; } = true;
-        public bool Alt { get; set; } = false;
-    }
-
-    public class WatchDogProcessConfig
-    {
-        public string ExePath { get; set; }
-        public string Arguments { get; set; }
-        public string WorkingDirectory { get; set; }
-    }
-
-    public class WatchDogConfig
-    {
-        public int CheckIntervalMs { get; set; } = 5000;
-        public WatchDogProcessConfig[] Processes { get; set; } = new WatchDogProcessConfig[0];
-    }
-
-    public enum ExitHotCornerPosition
-    {
-        TopLeft = 0,
-        TopRight = 1,
-        BottomLeft = 2,
-        BottomRight = 3
-    }
-
-    public class AppConfig
-    {
-        public ExitHotkeyConfig ExitHotkey { get; set; } = new ExitHotkeyConfig();
-        public WatchDogConfig WatchDog { get; set; } = new WatchDogConfig();
-        /// <summary>
-        /// Password to exit restricted mode; empty = not required.
-        /// </summary>
-        public string RestrictedPassword { get; set; }
-        public bool ExitHotCornerEnabled { get; set; } = false;
-        /// <summary>
-        /// 0=TopLeft, 1=TopRight, 2=BottomLeft, 3=BottomRight.
-        /// </summary>
-        public int ExitHotCornerCorner { get; set; } = (int)ExitHotCornerPosition.TopLeft;
-        /// <summary>
-        /// Size of corner zone in pixels.
-        /// </summary>
-        public int ExitHotCornerSizePx { get; set; } = 50;
-        /// <summary>
-        /// Utility: hide taskbar on all monitors when in restricted mode.
-        /// </summary>
-        public bool UtilityHideTaskbar { get; set; } = false;
-        /// <summary>
-        /// Utility: hide Start Menu when in restricted mode.
-        /// </summary>
-        public bool UtilityHideStartMenu { get; set; } = false;
-    }
-
     /// <summary>
     /// Load/save config from config.json (next to exe); file content is AES-encrypted.
     /// </summary>
@@ -113,21 +57,31 @@ namespace RestrictedMode
         /// </summary>
         public static void Save(AppConfig config)
         {
-            if (config == null) return;
+            string error;
+            if (!TrySave(config, out error)) System.Diagnostics.Trace.TraceError(error);
+        }
+
+        public static bool TrySave(AppConfig config, out string error)
+        {
+            error = null;
+            string temp = ConfigPath + "." + Guid.NewGuid().ToString("N") + ".tmp";
             try
             {
-                string json = Json.Serialize(config);
-                string encrypted = Encrypt(json);
-                File.WriteAllText(ConfigPath, encrypted, Encoding.UTF8);
+                if (config == null) throw new ArgumentNullException(nameof(config));
+                File.WriteAllText(temp, Encrypt(Json.Serialize(config)), Encoding.UTF8);
+                if (File.Exists(ConfigPath)) File.Replace(temp, ConfigPath, ConfigPath + ".bak");
+                else File.Move(temp, ConfigPath);
+                return true;
             }
-            catch { }
+            catch (Exception ex) { error = ex.ToString(); return false; }
+            finally { try { if (File.Exists(temp)) File.Delete(temp); } catch { } }
         }
 
         public static AppConfig GetDefault()
         {
             return new AppConfig
             {
-                ExitHotkey = new ExitHotkeyConfig { Key = "F12", Ctrl = true, Shift = true, Alt = false },
+                ExitHotkey = new ExitHotkeyConfig { Key = "F12", Ctrl = true, Shift = true, Alt = false, AlsoAllowDefaultHotkey = true },
                 WatchDog = new WatchDogConfig { CheckIntervalMs = 5000, Processes = new WatchDogProcessConfig[0] },
                 RestrictedPassword = null,
                 ExitHotCornerEnabled = false,

@@ -29,7 +29,7 @@ namespace RestrictedMode
             this.lblPrompt.Location = new System.Drawing.Point(12, 14);
             this.lblPrompt.Name = "lblPrompt";
             this.lblPrompt.Size = new System.Drawing.Size(200, 17);
-            this.lblPrompt.TabIndex = 0;
+            this.lblPrompt.TabIndex = 5;
             this.lblPrompt.Text = "Enter password:";
             //
             // txtPassword
@@ -38,7 +38,7 @@ namespace RestrictedMode
             this.txtPassword.Location = new System.Drawing.Point(12, 38);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(268, 25);
-            this.txtPassword.TabIndex = 1;
+            this.txtPassword.TabIndex = 0;
             this.txtPassword.UseSystemPasswordChar = true;
             //
             // btnToggleVisibility

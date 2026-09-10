@@ -28,31 +28,38 @@ namespace RestrictedMode
         /// </summary>
         public static event Action ExitRestrictedRequested;
 
-        private static Keys _exitKey = Keys.F12;
-        private static bool _exitCtrl = true;
-        private static bool _exitShift = true;
-        private static bool _exitAlt = false;
+        private static readonly Keys DefaultExitKey = Keys.F12;
+        private static readonly bool DefaultExitCtrl = true;
+        private static readonly bool DefaultExitShift = true;
+        private static readonly bool DefaultExitAlt = false;
 
-        public static void SetExitHotkey(Keys key, bool ctrl = true, bool shift = true, bool alt = false)
+        private static Keys _exitKey = DefaultExitKey;
+        private static bool _exitCtrl = DefaultExitCtrl;
+        private static bool _exitShift = DefaultExitShift;
+        private static bool _exitAlt = DefaultExitAlt;
+        private static bool _alsoAllowDefaultHotkey = true;
+
+        public static void SetExitHotkey(Keys key, bool ctrl = true, bool shift = true, bool alt = false, bool alsoAllowDefault = true)
         {
             _exitKey = key;
             _exitCtrl = ctrl;
             _exitShift = shift;
             _exitAlt = alt;
+            _alsoAllowDefaultHotkey = alsoAllowDefault;
         }
 
         public static void SetDefaultExitHotkey()
         {
-            SetExitHotkey(Keys.F12, ctrl: true, shift: true, alt: false);
+            SetExitHotkey(DefaultExitKey, DefaultExitCtrl, DefaultExitShift, DefaultExitAlt, alsoAllowDefault: true);
         }
 
         public static void ApplyExitHotkeyConfig(ExitHotkeyConfig c)
         {
             if (c == null) return;
-            var key = Keys.F12;
+            var key = DefaultExitKey;
             if (!string.IsNullOrEmpty(c.Key) && Enum.TryParse(c.Key, true, out Keys parsed))
                 key = parsed;
-            SetExitHotkey(key, c.Ctrl, c.Shift, c.Alt);
+            SetExitHotkey(key, c.Ctrl, c.Shift, c.Alt, c.AlsoAllowDefaultHotkey);
         }
 
         /// <summary>
@@ -61,7 +68,6 @@ namespace RestrictedMode
         public static bool CheckAndTriggerExit(Keys key)
         {
             if (!IsRestrictedMode) return false;
-            if (key != _exitKey) return false;
 
             bool ctrlDown = (GetAsyncKeyState((int)Keys.LControlKey) & KEY_PRESSED) != 0 ||
                             (GetAsyncKeyState((int)Keys.RControlKey) & KEY_PRESSED) != 0;
@@ -70,11 +76,22 @@ namespace RestrictedMode
             bool altDown = (GetAsyncKeyState((int)Keys.LMenu) & KEY_PRESSED) != 0 ||
                            (GetAsyncKeyState((int)Keys.RMenu) & KEY_PRESSED) != 0;
 
-            if (ctrlDown != _exitCtrl || shiftDown != _exitShift || altDown != _exitAlt)
+            bool matchedCustom = MatchesHotkey(key, ctrlDown, shiftDown, altDown, _exitKey, _exitCtrl, _exitShift, _exitAlt);
+            bool matchedDefault = _alsoAllowDefaultHotkey &&
+                MatchesHotkey(key, ctrlDown, shiftDown, altDown, DefaultExitKey, DefaultExitCtrl, DefaultExitShift, DefaultExitAlt);
+
+            if (!matchedCustom && !matchedDefault)
                 return false;
 
             ExitRestrictedRequested?.Invoke();
             return true;
+        }
+
+        private static bool MatchesHotkey(Keys key, bool ctrlDown, bool shiftDown, bool altDown,
+            Keys expectedKey, bool expectedCtrl, bool expectedShift, bool expectedAlt)
+        {
+            if (key != expectedKey) return false;
+            return ctrlDown == expectedCtrl && shiftDown == expectedShift && altDown == expectedAlt;
         }
 
         /// <summary>

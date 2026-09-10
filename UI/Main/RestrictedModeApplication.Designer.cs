@@ -16,6 +16,7 @@ namespace RestrictedMode
         private void InitializeComponent()
         {
             this.grpHotkey = new System.Windows.Forms.GroupBox();
+            this.chkAlsoAllowDefaultHotkey = new System.Windows.Forms.CheckBox();
             this.cboExitKey = new System.Windows.Forms.ComboBox();
             this.chkAlt = new System.Windows.Forms.CheckBox();
             this.chkShift = new System.Windows.Forms.CheckBox();
@@ -30,7 +31,6 @@ namespace RestrictedMode
             this.colWorkDir = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnAddProcess = new System.Windows.Forms.Button();
             this.btnRemoveProcess = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
             this.btnStartRestricted = new System.Windows.Forms.Button();
             this.grpPassword = new System.Windows.Forms.GroupBox();
             this.lblPasswordHint = new System.Windows.Forms.Label();
@@ -58,6 +58,7 @@ namespace RestrictedMode
             // 
             this.grpHotkey.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpHotkey.Controls.Add(this.chkAlsoAllowDefaultHotkey);
             this.grpHotkey.Controls.Add(this.cboExitKey);
             this.grpHotkey.Controls.Add(this.chkAlt);
             this.grpHotkey.Controls.Add(this.chkShift);
@@ -66,10 +67,23 @@ namespace RestrictedMode
             this.grpHotkey.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.grpHotkey.Location = new System.Drawing.Point(12, 96);
             this.grpHotkey.Name = "grpHotkey";
-            this.grpHotkey.Size = new System.Drawing.Size(800, 72);
+            this.grpHotkey.Size = new System.Drawing.Size(800, 100);
             this.grpHotkey.TabIndex = 0;
             this.grpHotkey.TabStop = false;
             this.grpHotkey.Text = "Exit Hotkey";
+            // 
+            // chkAlsoAllowDefaultHotkey
+            // 
+            this.chkAlsoAllowDefaultHotkey.AutoSize = true;
+            this.chkAlsoAllowDefaultHotkey.Checked = true;
+            this.chkAlsoAllowDefaultHotkey.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkAlsoAllowDefaultHotkey.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
+            this.chkAlsoAllowDefaultHotkey.Location = new System.Drawing.Point(13, 70);
+            this.chkAlsoAllowDefaultHotkey.Name = "chkAlsoAllowDefaultHotkey";
+            this.chkAlsoAllowDefaultHotkey.Size = new System.Drawing.Size(520, 23);
+            this.chkAlsoAllowDefaultHotkey.TabIndex = 5;
+            this.chkAlsoAllowDefaultHotkey.Text = "Also allow default hotkey (Ctrl+Shift+F12). Unchecked = custom hotkey only.";
+            this.chkAlsoAllowDefaultHotkey.UseVisualStyleBackColor = true;
             // 
             // cboExitKey
             // 
@@ -122,7 +136,7 @@ namespace RestrictedMode
             this.lblHotkey.Name = "lblHotkey";
             this.lblHotkey.Size = new System.Drawing.Size(248, 19);
             this.lblHotkey.TabIndex = 0;
-            this.lblHotkey.Text = "Press this combination to exit Restricted Mode:";
+            this.lblHotkey.Text = "Custom combination to exit Restricted Mode:";
             // 
             // grpWatchDog
             // 
@@ -135,7 +149,7 @@ namespace RestrictedMode
             this.grpWatchDog.Controls.Add(this.btnAddProcess);
             this.grpWatchDog.Controls.Add(this.btnRemoveProcess);
             this.grpWatchDog.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
-            this.grpWatchDog.Location = new System.Drawing.Point(12, 302);
+            this.grpWatchDog.Location = new System.Drawing.Point(12, 330);
             this.grpWatchDog.Name = "grpWatchDog";
             this.grpWatchDog.Size = new System.Drawing.Size(800, 258);
             this.grpWatchDog.TabIndex = 1;
@@ -235,24 +249,12 @@ namespace RestrictedMode
             this.btnRemoveProcess.UseVisualStyleBackColor = true;
             this.btnRemoveProcess.Click += new System.EventHandler(this.btnRemoveProcess_Click);
             // 
-            // btnSave
-            // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeButtonLarge);
-            this.btnSave.Location = new System.Drawing.Point(552, 648);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(130, 38);
-            this.btnSave.TabIndex = 2;
-            this.btnSave.Text = "Save configuration";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
             // btnStartRestricted
             // 
             this.btnStartRestricted.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStartRestricted.BackColor = System.Drawing.SystemColors.ControlLight;
             this.btnStartRestricted.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeButtonLarge, System.Drawing.FontStyle.Bold);
-            this.btnStartRestricted.Location = new System.Drawing.Point(690, 648);
+            this.btnStartRestricted.Location = new System.Drawing.Point(690, 676);
             this.btnStartRestricted.Name = "btnStartRestricted";
             this.btnStartRestricted.Size = new System.Drawing.Size(122, 38);
             this.btnStartRestricted.TabIndex = 3;
@@ -285,7 +287,7 @@ namespace RestrictedMode
             this.grpHotCorner.Controls.Add(this.lblHotCornerSize);
             this.grpHotCorner.Controls.Add(this.numHotCornerSize);
             this.grpHotCorner.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
-            this.grpHotCorner.Location = new System.Drawing.Point(12, 176);
+            this.grpHotCorner.Location = new System.Drawing.Point(12, 204);
             this.grpHotCorner.Name = "grpHotCorner";
             this.grpHotCorner.Size = new System.Drawing.Size(800, 118);
             this.grpHotCorner.TabIndex = 6;
@@ -363,7 +365,7 @@ namespace RestrictedMode
             this.grpUtility.Controls.Add(this.chkHideTaskbar);
             this.grpUtility.Controls.Add(this.chkHideStartMenu);
             this.grpUtility.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
-            this.grpUtility.Location = new System.Drawing.Point(12, 566);
+            this.grpUtility.Location = new System.Drawing.Point(12, 594);
             this.grpUtility.Name = "grpUtility";
             this.grpUtility.Size = new System.Drawing.Size(800, 72);
             this.grpUtility.TabIndex = 7;
@@ -426,9 +428,8 @@ namespace RestrictedMode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(824, 693);
+            this.ClientSize = new System.Drawing.Size(824, 721);
             this.Controls.Add(this.btnStartRestricted);
-            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.grpUtility);
             this.Controls.Add(this.grpWatchDog);
             this.Controls.Add(this.grpHotCorner);
@@ -458,6 +459,7 @@ namespace RestrictedMode
         #endregion
 
         private System.Windows.Forms.GroupBox grpHotkey;
+        private System.Windows.Forms.CheckBox chkAlsoAllowDefaultHotkey;
         private System.Windows.Forms.ComboBox cboExitKey;
         private System.Windows.Forms.CheckBox chkAlt;
         private System.Windows.Forms.CheckBox chkShift;
@@ -472,7 +474,6 @@ namespace RestrictedMode
         private System.Windows.Forms.ColumnHeader colWorkDir;
         private System.Windows.Forms.Button btnAddProcess;
         private System.Windows.Forms.Button btnRemoveProcess;
-        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnStartRestricted;
         private System.Windows.Forms.GroupBox grpPassword;
         private System.Windows.Forms.Label lblPasswordHint;

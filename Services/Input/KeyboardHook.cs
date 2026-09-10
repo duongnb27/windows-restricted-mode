@@ -53,6 +53,7 @@ namespace RestrictedMode
         private readonly HashSet<Keys> _blockedKeys = new HashSet<Keys>();
         private readonly HashSet<int> _blockedVirtualKeys = new HashSet<int>();
         private bool _disposed;
+        private readonly HashSet<Keys> _exitKeysHeld = new HashSet<Keys>();
 
         /// <summary>
         /// Raised on key press before block decision; return true to block the key.
@@ -118,10 +119,16 @@ namespace RestrictedMode
             if (_hookId == IntPtr.Zero) return;
             UnhookWindowsHookEx(_hookId);
             _hookId = IntPtr.Zero;
+            _exitKeysHeld.Clear();
         }
 
         private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
+            if (nCode >= 0 && (wParam == (IntPtr)0x0101 || wParam == (IntPtr)0x0105))
+            {
+                var released = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(KBDLLHOOKSTRUCT));
+                if (_exitKeysHeld.Remove((Keys)released.vkCode)) return (IntPtr)1;
+            }
             if (nCode >= 0 && (wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN))
             {
                 if (!RestrictedState.IsRestrictedMode)
@@ -130,8 +137,12 @@ namespace RestrictedMode
                 var hookStruct = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(KBDLLHOOKSTRUCT));
                 var key = (Keys)hookStruct.vkCode;
 
+                if (_exitKeysHeld.Contains(key)) return (IntPtr)1;
                 if (RestrictedState.CheckAndTriggerExit(key))
-                    return CallNextHookEx(_hookId, nCode, wParam, lParam);
+                {
+                    _exitKeysHeld.Add(key);
+                    return (IntPtr)1;
+                }
 
                 const int KeyPressed = 0x8000;
                 bool altDown = (GetAsyncKeyState((int)Keys.LMenu) & KeyPressed) != 0 || (GetAsyncKeyState((int)Keys.RMenu) & KeyPressed) != 0;

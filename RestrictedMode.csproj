@@ -11,6 +11,8 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -47,36 +49,49 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigManager.cs" />
-    <Compile Include="ExitHotCorners.cs" />
-    <Compile Include="RestrictedModeApplication.cs">
+    <Compile Include="Configuration\ConfigManager.cs" />
+    <Compile Include="Configuration\AppConfig.cs" />
+    <Compile Include="Services\Windows\StartupTask.cs" />
+    <Compile Include="UI\Main\ModernLayout.cs" />
+    <Compile Include="UI\Main\SettingsNavigation.cs" />
+    <Compile Include="UI\Main\AutoSave.cs" />
+    <EmbeddedResource Include="Assets\AppIcon.ico"><LogicalName>RestrictedMode.AppIcon.ico</LogicalName></EmbeddedResource>
+    <None Include="Assets\AppIcon.png" />
+    <Compile Include="Services\Input\ExitHotCorners.cs" />
+    <Compile Include="UI\Main\RestrictedModeApplication.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RestrictedModeApplication.Designer.cs">
+    <Compile Include="UI\Main\RestrictedModeApplication.Designer.cs">
       <DependentUpon>RestrictedModeApplication.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProcessEditForm.cs">
+    <Compile Include="UI\Dialogs\ProcessEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProcessEditForm.Designer.cs">
+    <Compile Include="UI\Dialogs\ProcessEditForm.Designer.cs">
       <DependentUpon>ProcessEditForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PasswordDialogForm.cs">
+    <Compile Include="UI\Dialogs\PasswordDialogLayout.cs" />
+    <Compile Include="UI\Dialogs\PasswordDialogForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PasswordDialogForm.Designer.cs">
+    <Compile Include="UI\Dialogs\PasswordDialogForm.Designer.cs">
       <DependentUpon>PasswordDialogForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="KeyboardHook.cs" />
-    <Compile Include="RestrictedState.cs" />
-    <Compile Include="ServicesWatchDog.cs" />
-    <Compile Include="TaskManagerPolicy.cs" />
-    <Compile Include="StartMenuPolicy.cs" />
-    <Compile Include="TaskbarPolicy.cs" />
-    <Compile Include="UIFonts.cs" />
+    <Compile Include="Services\Input\KeyboardHook.cs" />
+    <Compile Include="Core\RestrictedState.cs" />
+    <Compile Include="Services\Processes\ServicesWatchDog.cs" />
+    <Compile Include="Services\Windows\TaskManagerPolicy.cs" />
+    <Compile Include="Services\Windows\EdgeSwipePolicy.cs" />
+    <Compile Include="Services\Windows\StartMenuPolicy.cs" />
+    <Compile Include="Services\Windows\TaskbarPolicy.cs" />
+    <Compile Include="UI\Theme\UIFonts.cs" />
+    <Compile Include="UI\Main\StartupSettings.cs" />
+    <Compile Include="UI\Main\ConfigurationBindings.cs" />
+    <Compile Include="UI\Main\ManagedApplications.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="RestrictedModeApplication.resx">
+    <EmbeddedResource Include="UI\Main\RestrictedModeApplication.resx">
+      <LogicalName>RestrictedMode.RestrictedModeApplication.resources</LogicalName>
       <DependentUpon>RestrictedModeApplication.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -100,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="app.manifest" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
