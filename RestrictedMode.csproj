@@ -85,6 +85,7 @@
     <Compile Include="Services\Windows\StartMenuPolicy.cs" />
     <Compile Include="Services\Windows\TaskbarPolicy.cs" />
     <Compile Include="UI\Theme\UIFonts.cs" />
+    <Compile Include="UI\UIText.cs" />
     <Compile Include="UI\Main\StartupSettings.cs" />
     <Compile Include="UI\Main\ConfigurationBindings.cs" />
     <Compile Include="UI\Main\ManagedApplications.cs" />

@@ -87,7 +87,7 @@ namespace RestrictedMode
         private void btnShowPassword_Click(object sender, EventArgs e)
         {
             txtRestrictedPassword.UseSystemPasswordChar = !txtRestrictedPassword.UseSystemPasswordChar;
-            btnShowPassword.Text = txtRestrictedPassword.UseSystemPasswordChar ? "Show" : "Hide";
+            btnShowPassword.Text = txtRestrictedPassword.UseSystemPasswordChar ? UIText.Show : UIText.Hide;
         }
 
         private void btnStartRestricted_Click(object sender, EventArgs e)

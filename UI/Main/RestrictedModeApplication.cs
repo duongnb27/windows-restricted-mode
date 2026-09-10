@@ -67,10 +67,10 @@ namespace RestrictedMode
             cboExitKey.SelectedIndex = 0;
 
             cboHotCornerPosition.Items.Clear();
-            cboHotCornerPosition.Items.Add("Top left");
-            cboHotCornerPosition.Items.Add("Top right");
-            cboHotCornerPosition.Items.Add("Bottom left");
-            cboHotCornerPosition.Items.Add("Bottom right");
+            cboHotCornerPosition.Items.Add(UIText.TopLeft);
+            cboHotCornerPosition.Items.Add(UIText.TopRight);
+            cboHotCornerPosition.Items.Add(UIText.BottomLeft);
+            cboHotCornerPosition.Items.Add(UIText.BottomRight);
             cboHotCornerPosition.SelectedIndex = 0;
 
             _config = ConfigManager.Load();
@@ -96,9 +96,9 @@ namespace RestrictedMode
                 _keyboardHook = new KeyboardHook();
             _keyboardHook.Install();
             TaskManagerPolicy.Disable();
-            bool edgePolicyApplied = EdgeSwipePolicy.Disable();
+
             EdgeSwipePolicy.CloseFolderWindows();
-            string edgePolicyError = EdgeSwipePolicy.LastError;
+
 
             _watchDog?.Stop();
             _watchDog = new ServicesWatchDog { CheckIntervalMs = _config.WatchDog?.CheckIntervalMs ?? 5000 };
@@ -122,16 +122,6 @@ namespace RestrictedMode
                 TaskbarPolicy.Hide();
 
             Hide();
-            if (!edgePolicyApplied || !string.IsNullOrEmpty(edgePolicyError))
-            {
-                MessageBox.Show(
-                    "Restricted mode protection is incomplete. Windows edge gestures may still work.\n\n" +
-                    "Run RestrictedMode as Administrator under the kiosk account, then retry. " +
-                    "Reboot after installing policies.\n\n" + edgePolicyError +
-                    "\n\nLog (if writable): " + EdgeSwipePolicy.LogPath,
-                    "Restricted mode policy error", MessageBoxButtons.OK, MessageBoxIcon.Error,
-                    MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-            }
         }
 
         private void OnExitRestrictedRequested()
@@ -160,13 +150,13 @@ namespace RestrictedMode
             _watchDog?.Stop();
             try
             {
-                using (var dlg = new PasswordDialogForm("Exit Restricted Mode", "Enter password to exit Restricted Mode:"))
+                using (var dlg = new PasswordDialogForm(UIText.ExitTitle, UIText.ExitPrompt))
                 {
                     dlg.ExpectedPassword = requiredPassword;
                     dlg.TopMost = true;
                     dlg.StartPosition = FormStartPosition.CenterScreen;
                     dlg.ShowInTaskbar = false;
-                    if (dlg.ShowDialog(this) != DialogResult.OK)
+                    if (dlg.ShowDialog() != DialogResult.OK)
                         return;
                     RestrictedState.ConfirmExitRestricted();
                 }
@@ -185,6 +175,7 @@ namespace RestrictedMode
         private void OnRestrictedModeExited()
         {
             RefreshStartupOption();
+            RefreshEdgeSwipeOption();
             _exitHotCorners?.Stop();
             _keyboardHook?.Uninstall();
             TaskManagerPolicy.Enable();
@@ -195,21 +186,13 @@ namespace RestrictedMode
                 if (_config.UtilityHideStartMenu)
                     StartMenuPolicy.Show();
             }
-            RestoreEdgePolicies();
+
             _watchDog?.Stop();
             _allowShowForm = true;
             ShowInTaskbar = true;
             Show();
             WindowState = FormWindowState.Normal;
             BringToFront();
-        }
-
-        private void RestoreEdgePolicies()
-        {
-            if (!EdgeSwipePolicy.Enable())
-                MessageBox.Show("Could not restore Windows policies.\n\n" + EdgeSwipePolicy.LastError +
-                    "\n\nLog: " + EdgeSwipePolicy.LogPath, "Policy restore error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -219,7 +202,7 @@ namespace RestrictedMode
             TaskManagerPolicy.Enable();
             TaskbarPolicy.Show();
             StartMenuPolicy.Show();
-            RestoreEdgePolicies();
+
             _watchDog?.Stop();
             UIToConfig();
             if (_config != null)

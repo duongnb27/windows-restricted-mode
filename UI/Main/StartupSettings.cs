@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace RestrictedMode
@@ -10,15 +7,70 @@ namespace RestrictedMode
     {
         private CheckBox _startupCheckBox;
         private bool _readingStartup;
+        private CheckBox _edgeSwipeCheckBox;
+        private bool _readingEdgeSwipe;
+
+        private void InitializeEdgeSwipeOption()
+        {
+            _edgeSwipeCheckBox = new CheckBox
+            {
+                Text = UIText.BlockEdgeSwipes,
+                AutoSize = true,
+                Location = new System.Drawing.Point(13, 106),
+                TabIndex = 3
+            };
+            grpUtility.Controls.Add(_edgeSwipeCheckBox);
+            _edgeSwipeCheckBox.CheckedChanged += (sender, args) =>
+            {
+                if (_readingEdgeSwipe) return;
+                try
+                {
+                    EdgeSwipePolicy.SetBlocked(_edgeSwipeCheckBox.Checked);
+                    MessageBox.Show(this,
+                        UIText.RestartMessage +
+                        UIText.PersistentSettingMessage,
+                        UIText.RestartTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, UIText.EdgeSwipesSaveFailed + ex.Message,
+                        UIText.EdgeSwipesTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                RefreshEdgeSwipeOption();
+            };
+            RefreshEdgeSwipeOption();
+        }
+
+        private void RefreshEdgeSwipeOption()
+        {
+            _readingEdgeSwipe = true;
+            try
+            {
+                _edgeSwipeCheckBox.Checked = EdgeSwipePolicy.IsBlocked();
+                _edgeSwipeCheckBox.Enabled = true;
+                _edgeSwipeCheckBox.Text = UIText.BlockEdgeSwipes;
+            }
+            catch (Exception ex)
+            {
+                _edgeSwipeCheckBox.CheckState = CheckState.Indeterminate;
+                _edgeSwipeCheckBox.Enabled = false;
+                _edgeSwipeCheckBox.Text = UIText.EdgeSwipesUnavailable;
+                System.Diagnostics.Trace.TraceError(ex.ToString());
+            }
+            finally { _readingEdgeSwipe = false; }
+        }
 
         private void InitializeStartupOption()
         {
+            // Initialize this settings group once, including persistent edge-swipe settings.
+            if (_startupCheckBox != null) return;
+
             _startupCheckBox = new CheckBox
             {
-                Text = "Start with Windows",
+                Text = UIText.StartWithWindows,
                 AutoSize = true,
-                Location = new System.Drawing.Point(250, 22),
-                TabIndex = 2
+                Location = new System.Drawing.Point(13, 22),
+                TabIndex = 0
             };
             grpUtility.Controls.Add(_startupCheckBox);
             _startupCheckBox.CheckedChanged += (sender, args) =>
@@ -30,12 +82,13 @@ namespace RestrictedMode
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this, "Could not update Windows startup: " + ex.Message,
-                        "Windows startup", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, UIText.StartupSaveFailed + ex.Message,
+                        UIText.StartupTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 RefreshStartupOption();
             };
             RefreshStartupOption();
+            InitializeEdgeSwipeOption();
         }
 
         private void RefreshStartupOption()
@@ -45,13 +98,13 @@ namespace RestrictedMode
             {
                 using (var task = new StartupTask()) _startupCheckBox.Checked = task.IsEnabled();
                 _startupCheckBox.Enabled = true;
-                _startupCheckBox.Text = "Start with Windows";
+                _startupCheckBox.Text = UIText.StartWithWindows;
             }
             catch (Exception ex)
             {
                 _startupCheckBox.CheckState = CheckState.Indeterminate;
                 _startupCheckBox.Enabled = false;
-                _startupCheckBox.Text = "Startup status unavailable";
+                _startupCheckBox.Text = UIText.StartupUnavailable;
                 System.Diagnostics.Trace.TraceError(ex.ToString());
             }
             finally { _readingStartup = false; }

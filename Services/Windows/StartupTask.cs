@@ -24,11 +24,34 @@ namespace RestrictedMode
             }
             catch { Dispose(); throw; }
         }
+        private static bool IsNotFound(Exception ex)
+        {
+            const int notFound = unchecked((int)0x80070002);
+            for (Exception e = ex; e != null; e = e.InnerException)
+            {
+                if (e is COMException com && com.ErrorCode == notFound) return true;
+                if (e.HResult == notFound) return true;
+            }
+            return false;
+        }
+
         private dynamic Find()
         {
             try { return Keep((object)folder.GetTask(TaskName)); }
-            catch (COMException ex) when (ex.ErrorCode == unchecked((int)0x80070002)) { return null; }
+            catch (Exception ex) when (IsNotFound(ex)) { return null; }
         }
+        private static bool PrincipalMatchesCurrentUser(string principalUser)
+        {
+            if (string.IsNullOrEmpty(principalUser)) return false;
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            if (string.Equals(principalUser, identity.User.Value, StringComparison.OrdinalIgnoreCase)) return true;
+            if (string.Equals(principalUser, identity.Name, StringComparison.OrdinalIgnoreCase)) return true;
+            if (string.Equals(principalUser, Environment.UserName, StringComparison.OrdinalIgnoreCase)) return true;
+            int slash = identity.Name.LastIndexOf('\\');
+            return slash >= 0 && string.Equals(principalUser, identity.Name.Substring(slash + 1),
+                StringComparison.OrdinalIgnoreCase);
+        }
+
         public bool IsEnabled()
         {
             dynamic task = Find();
@@ -42,10 +65,7 @@ namespace RestrictedMode
             if ((int)action.Type != 0 || !string.Equals(Path.GetFullPath((string)action.Path),
                 Application.ExecutablePath, StringComparison.OrdinalIgnoreCase)) return false;
             if ((int)principal.LogonType != 3 || (int)principal.RunLevel != 1) return false;
-            string user = WindowsIdentity.GetCurrent().User.Value;
-            string principalUser = (string)principal.UserId;
-            if (!string.Equals(principalUser, user, StringComparison.OrdinalIgnoreCase) &&
-                !string.Equals(principalUser, WindowsIdentity.GetCurrent().Name, StringComparison.OrdinalIgnoreCase)) return false;
+            if (!PrincipalMatchesCurrentUser((string)principal.UserId)) return false;
             for (int i = 1; i <= (int)triggers.Count; i++)
             {
                 dynamic trigger = Keep((object)triggers.Item(i));
@@ -57,8 +77,12 @@ namespace RestrictedMode
         {
             if (!enabled)
             {
-                if (Find() != null) folder.DeleteTask(TaskName, 0);
-                if (Find() != null) throw new IOException("Startup task was not removed.");
+                try
+                {
+                    if (Find() != null) folder.DeleteTask(TaskName, 0);
+                }
+                catch (Exception ex) when (IsNotFound(ex)) { /* already removed */ }
+                if (Find() != null) throw new IOException(UIText.StartupRemovalFailed);
                 return;
             }
             dynamic definition = Keep((object)service.NewTask(0));
@@ -82,7 +106,7 @@ namespace RestrictedMode
             action.Path = Application.ExecutablePath;
             action.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
             Keep((object)folder.RegisterTaskDefinition(TaskName, definition, 6, user, null, 3, null));
-            if (!IsEnabled()) throw new IOException("Startup task verification failed.");
+            if (!IsEnabled()) throw new IOException(UIText.StartupVerificationFailed);
         }
         public void Dispose()
         {

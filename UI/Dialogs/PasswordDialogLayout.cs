@@ -24,7 +24,7 @@ namespace RestrictedMode
                 Location = new Point(24, 24), Size = new Size(40, 40) });
             header.Controls.Add(new Label { Text = title, AutoSize = false, Location = new Point(80, 16),
                 Size = new Size(380, 32), ForeColor = Color.White, Font = new Font("Segoe UI", 17F, FontStyle.Bold) });
-            header.Controls.Add(new Label { Text = "Administrator verification", AutoSize = true,
+            header.Controls.Add(new Label { Text = UIText.AdministratorVerification, AutoSize = true,
                 Location = new Point(82, 52), ForeColor = Color.FromArgb(180, 195, 215) });
             Controls.Add(header);
 
@@ -35,7 +35,6 @@ namespace RestrictedMode
             txtPassword.SetBounds(24, 150, 340, 34);
             txtPassword.TabIndex = 0;
             btnToggleVisibility.SetBounds(376, 150, 80, 34);
-            btnToggleVisibility.Text = "Show";
             btnToggleVisibility.TabIndex = 1;
             _passwordError = new Label { Location = new Point(24, 190), Size = new Size(432, 24),
                 ForeColor = Color.Firebrick, Text = "" };
@@ -43,7 +42,6 @@ namespace RestrictedMode
             txtPassword.TextChanged += (sender, args) => _passwordError.Text = "";
             btnCancel.SetBounds(114, 220, 120, 40);
             btnOK.SetBounds(246, 220, 120, 40);
-            btnOK.Text = "Unlock";
             btnOK.TabIndex = 2;
             btnCancel.TabIndex = 3;
             foreach (var button in new[] { btnToggleVisibility, btnOK, btnCancel })

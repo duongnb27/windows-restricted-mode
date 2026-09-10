@@ -30,7 +30,7 @@ namespace RestrictedMode
             this.lblPrompt.Name = "lblPrompt";
             this.lblPrompt.Size = new System.Drawing.Size(200, 17);
             this.lblPrompt.TabIndex = 5;
-            this.lblPrompt.Text = "Enter password:";
+            this.lblPrompt.Text = UIText.PasswordPrompt;
             //
             // txtPassword
             //
@@ -48,7 +48,7 @@ namespace RestrictedMode
             this.btnToggleVisibility.Name = "btnToggleVisibility";
             this.btnToggleVisibility.Size = new System.Drawing.Size(36, 28);
             this.btnToggleVisibility.TabIndex = 2;
-            this.btnToggleVisibility.Text = "👁";
+            this.btnToggleVisibility.Text = UIText.Show;
             this.btnToggleVisibility.UseVisualStyleBackColor = true;
             this.btnToggleVisibility.Click += new System.EventHandler(this.btnToggleVisibility_Click);
             //
@@ -59,7 +59,7 @@ namespace RestrictedMode
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 28);
             this.btnOK.TabIndex = 3;
-            this.btnOK.Text = "OK";
+            this.btnOK.Text = UIText.Unlock;
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             //
@@ -71,7 +71,7 @@ namespace RestrictedMode
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 28);
             this.btnCancel.TabIndex = 4;
-            this.btnCancel.Text = "Cancel";
+            this.btnCancel.Text = UIText.Cancel;
             this.btnCancel.UseVisualStyleBackColor = true;
             //
             // PasswordDialogForm
@@ -91,7 +91,7 @@ namespace RestrictedMode
             this.MinimizeBox = false;
             this.Name = "PasswordDialogForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Password";
+            this.Text = UIText.PasswordTitle;
             this.ResumeLayout(false);
             this.PerformLayout();
         }

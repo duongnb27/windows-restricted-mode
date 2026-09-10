@@ -28,7 +28,7 @@ namespace RestrictedMode
             string error;
             bool saved = ConfigManager.TrySave(_config, out error);
             _saveStatus.Visible = !saved;
-            _saveStatus.Text = saved ? "" : "Save failed. Check folder permissions and try again.";
+            _saveStatus.Text = saved ? "" : UIText.SaveFailed;
             _saveStatus.ForeColor = saved ? Color.FromArgb(100, 116, 139) : Color.Firebrick;
             if (!saved) System.Diagnostics.Trace.TraceError(error);
             return saved;

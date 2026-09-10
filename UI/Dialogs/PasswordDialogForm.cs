@@ -9,11 +9,31 @@ namespace RestrictedMode
     /// </summary>
     public partial class PasswordDialogForm : Form
     {
+        private const int SW_RESTORE = 9;
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr processId);
+
+        [DllImport("kernel32.dll")]
+        private static extern uint GetCurrentThreadId();
+
+        [DllImport("user32.dll")]
+        private static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);
+
         [DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("user32.dll")]
         private static extern bool BringWindowToTop(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("user32.dll")]
+        private static extern bool AllowSetForegroundWindow(int dwProcessId);
 
         public string ExpectedPassword { private get; set; }
 
@@ -32,26 +52,59 @@ namespace RestrictedMode
         {
             base.OnShown(e);
             TopMost = true;
+            ForceKeyboardFocus();
+            // Retry after the previous app (e.g. a focused kiosk text box) finishes its focus cycle.
             BeginInvoke(new Action(() =>
             {
                 if (IsDisposed || !Visible) return;
-                SetForegroundWindow(Handle);
-                Activate();
-                txtPassword.Select();
+                ForceKeyboardFocus();
             }));
         }
 
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
-            // Focus on activation only; do not poll or fight other windows with a timer.
-            if (txtPassword != null) ActiveControl = txtPassword;
+            if (txtPassword != null && !txtPassword.Focused)
+                txtPassword.Focus();
+        }
+
+        /// <summary>
+        /// Steal foreground from another process that currently owns keyboard focus
+        /// (common when a managed kiosk webview has an active text field).
+        /// </summary>
+        private void ForceKeyboardFocus()
+        {
+            IntPtr hwnd = Handle;
+            AllowSetForegroundWindow(-1); // ASFW_ANY
+            IntPtr foreground = GetForegroundWindow();
+            uint thisThread = GetCurrentThreadId();
+            uint foreThread = foreground != IntPtr.Zero
+                ? GetWindowThreadProcessId(foreground, IntPtr.Zero)
+                : 0;
+            bool attached = false;
+            try
+            {
+                if (foreThread != 0 && foreThread != thisThread)
+                    attached = AttachThreadInput(foreThread, thisThread, true);
+                ShowWindow(hwnd, SW_RESTORE);
+                BringWindowToTop(hwnd);
+                SetForegroundWindow(hwnd);
+                Activate();
+                TopMost = true;
+            }
+            finally
+            {
+                if (attached) AttachThreadInput(foreThread, thisThread, false);
+            }
+            ActiveControl = txtPassword;
+            txtPassword.Focus();
+            txtPassword.Select();
         }
 
         private void btnToggleVisibility_Click(object sender, EventArgs e)
         {
             txtPassword.UseSystemPasswordChar = !txtPassword.UseSystemPasswordChar;
-            btnToggleVisibility.Text = txtPassword.UseSystemPasswordChar ? "Show" : "Hide";
+            btnToggleVisibility.Text = txtPassword.UseSystemPasswordChar ? UIText.Show : UIText.Hide;
             txtPassword.Focus();
         }
 
@@ -59,7 +112,7 @@ namespace RestrictedMode
         {
             if (ExpectedPassword != null && EnteredPassword != ExpectedPassword)
             {
-                _passwordError.Text = "Incorrect password. Please try again.";
+                _passwordError.Text = UIText.IncorrectPassword;
                 txtPassword.Focus();
                 txtPassword.SelectAll();
                 return;

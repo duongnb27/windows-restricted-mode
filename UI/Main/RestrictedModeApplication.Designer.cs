@@ -70,7 +70,7 @@ namespace RestrictedMode
             this.grpHotkey.Size = new System.Drawing.Size(800, 100);
             this.grpHotkey.TabIndex = 0;
             this.grpHotkey.TabStop = false;
-            this.grpHotkey.Text = "Exit Hotkey";
+            this.grpHotkey.Text = UIText.HotkeyGroup;
             // 
             // chkAlsoAllowDefaultHotkey
             // 
@@ -82,7 +82,7 @@ namespace RestrictedMode
             this.chkAlsoAllowDefaultHotkey.Name = "chkAlsoAllowDefaultHotkey";
             this.chkAlsoAllowDefaultHotkey.Size = new System.Drawing.Size(520, 23);
             this.chkAlsoAllowDefaultHotkey.TabIndex = 5;
-            this.chkAlsoAllowDefaultHotkey.Text = "Also allow default hotkey (Ctrl+Shift+F12). Unchecked = custom hotkey only.";
+            this.chkAlsoAllowDefaultHotkey.Text = UIText.DefaultHotkeys;
             this.chkAlsoAllowDefaultHotkey.UseVisualStyleBackColor = true;
             // 
             // cboExitKey
@@ -103,7 +103,7 @@ namespace RestrictedMode
             this.chkAlt.Name = "chkAlt";
             this.chkAlt.Size = new System.Drawing.Size(45, 23);
             this.chkAlt.TabIndex = 3;
-            this.chkAlt.Text = "Alt";
+            this.chkAlt.Text = UIText.Alt;
             this.chkAlt.UseVisualStyleBackColor = true;
             // 
             // chkShift
@@ -114,7 +114,7 @@ namespace RestrictedMode
             this.chkShift.Name = "chkShift";
             this.chkShift.Size = new System.Drawing.Size(55, 23);
             this.chkShift.TabIndex = 2;
-            this.chkShift.Text = "Shift";
+            this.chkShift.Text = UIText.Shift;
             this.chkShift.UseVisualStyleBackColor = true;
             // 
             // chkCtrl
@@ -125,7 +125,7 @@ namespace RestrictedMode
             this.chkCtrl.Name = "chkCtrl";
             this.chkCtrl.Size = new System.Drawing.Size(50, 23);
             this.chkCtrl.TabIndex = 1;
-            this.chkCtrl.Text = "Ctrl";
+            this.chkCtrl.Text = UIText.Ctrl;
             this.chkCtrl.UseVisualStyleBackColor = true;
             // 
             // lblHotkey
@@ -136,7 +136,7 @@ namespace RestrictedMode
             this.lblHotkey.Name = "lblHotkey";
             this.lblHotkey.Size = new System.Drawing.Size(248, 19);
             this.lblHotkey.TabIndex = 0;
-            this.lblHotkey.Text = "Custom combination to exit Restricted Mode:";
+            this.lblHotkey.Text = UIText.CustomHotkeys;
             // 
             // grpWatchDog
             // 
@@ -154,7 +154,7 @@ namespace RestrictedMode
             this.grpWatchDog.Size = new System.Drawing.Size(800, 258);
             this.grpWatchDog.TabIndex = 1;
             this.grpWatchDog.TabStop = false;
-            this.grpWatchDog.Text = "Processes to keep running";
+            this.grpWatchDog.Text = UIText.ApplicationsGroup;
             // 
             // lblInterval
             // 
@@ -164,7 +164,7 @@ namespace RestrictedMode
             this.lblInterval.Name = "lblInterval";
             this.lblInterval.Size = new System.Drawing.Size(127, 19);
             this.lblInterval.TabIndex = 0;
-            this.lblInterval.Text = "Check every (seconds):";
+            this.lblInterval.Text = UIText.CheckInterval;
             // 
             // numIntervalSeconds
             // 
@@ -212,17 +212,17 @@ namespace RestrictedMode
             // 
             // colExe
             // 
-            this.colExe.Text = "Exe file";
+            this.colExe.Text = UIText.ExeFile;
             this.colExe.Width = 229;
             // 
             // colArgs
             // 
-            this.colArgs.Text = "Arguments";
+            this.colArgs.Text = UIText.ArgumentsColumn;
             this.colArgs.Width = 179;
             // 
             // colWorkDir
             // 
-            this.colWorkDir.Text = "Working directory";
+            this.colWorkDir.Text = UIText.WorkingDirectoryColumn;
             this.colWorkDir.Width = 341;
             // 
             // btnAddProcess
@@ -233,7 +233,7 @@ namespace RestrictedMode
             this.btnAddProcess.Name = "btnAddProcess";
             this.btnAddProcess.Size = new System.Drawing.Size(75, 26);
             this.btnAddProcess.TabIndex = 3;
-            this.btnAddProcess.Text = "Add";
+            this.btnAddProcess.Text = UIText.AddApplication;
             this.btnAddProcess.UseVisualStyleBackColor = true;
             this.btnAddProcess.Click += new System.EventHandler(this.btnAddProcess_Click);
             // 
@@ -245,7 +245,7 @@ namespace RestrictedMode
             this.btnRemoveProcess.Name = "btnRemoveProcess";
             this.btnRemoveProcess.Size = new System.Drawing.Size(75, 26);
             this.btnRemoveProcess.TabIndex = 4;
-            this.btnRemoveProcess.Text = "Remove";
+            this.btnRemoveProcess.Text = UIText.Remove;
             this.btnRemoveProcess.UseVisualStyleBackColor = true;
             this.btnRemoveProcess.Click += new System.EventHandler(this.btnRemoveProcess_Click);
             // 
@@ -258,7 +258,7 @@ namespace RestrictedMode
             this.btnStartRestricted.Name = "btnStartRestricted";
             this.btnStartRestricted.Size = new System.Drawing.Size(122, 38);
             this.btnStartRestricted.TabIndex = 3;
-            this.btnStartRestricted.Text = "Start Restricted";
+            this.btnStartRestricted.Text = UIText.Start;
             this.btnStartRestricted.UseVisualStyleBackColor = false;
             this.btnStartRestricted.Click += new System.EventHandler(this.btnStartRestricted_Click);
             // 
@@ -275,7 +275,7 @@ namespace RestrictedMode
             this.grpPassword.Size = new System.Drawing.Size(800, 76);
             this.grpPassword.TabIndex = 5;
             this.grpPassword.TabStop = false;
-            this.grpPassword.Text = "Restricted Mode Password";
+            this.grpPassword.Text = UIText.PasswordGroup;
             // 
             // grpHotCorner
             // 
@@ -292,7 +292,7 @@ namespace RestrictedMode
             this.grpHotCorner.Size = new System.Drawing.Size(800, 118);
             this.grpHotCorner.TabIndex = 6;
             this.grpHotCorner.TabStop = false;
-            this.grpHotCorner.Text = "Exit Hot Corner";
+            this.grpHotCorner.Text = UIText.HotCornerGroup;
             // 
             // chkHotCornerEnabled
             // 
@@ -302,7 +302,7 @@ namespace RestrictedMode
             this.chkHotCornerEnabled.Name = "chkHotCornerEnabled";
             this.chkHotCornerEnabled.Size = new System.Drawing.Size(348, 23);
             this.chkHotCornerEnabled.TabIndex = 0;
-            this.chkHotCornerEnabled.Text = "Enable";
+            this.chkHotCornerEnabled.Text = UIText.HotCornerEnabled;
             this.chkHotCornerEnabled.UseVisualStyleBackColor = true;
             // 
             // lblHotCornerPosition
@@ -313,7 +313,7 @@ namespace RestrictedMode
             this.lblHotCornerPosition.Name = "lblHotCornerPosition";
             this.lblHotCornerPosition.Size = new System.Drawing.Size(38, 19);
             this.lblHotCornerPosition.TabIndex = 1;
-            this.lblHotCornerPosition.Text = "Corner:";
+            this.lblHotCornerPosition.Text = UIText.Corner;
             // 
             // cboHotCornerPosition
             // 
@@ -333,7 +333,7 @@ namespace RestrictedMode
             this.lblHotCornerSize.Name = "lblHotCornerSize";
             this.lblHotCornerSize.Size = new System.Drawing.Size(99, 19);
             this.lblHotCornerSize.TabIndex = 3;
-            this.lblHotCornerSize.Text = "Size (pixels):";
+            this.lblHotCornerSize.Text = UIText.CornerSize;
             // 
             // numHotCornerSize
             // 
@@ -370,28 +370,28 @@ namespace RestrictedMode
             this.grpUtility.Size = new System.Drawing.Size(800, 72);
             this.grpUtility.TabIndex = 7;
             this.grpUtility.TabStop = false;
-            this.grpUtility.Text = "Utility";
+            this.grpUtility.Text = UIText.DesktopGroup;
             // 
             // chkHideTaskbar
             // 
             this.chkHideTaskbar.AutoSize = true;
             this.chkHideTaskbar.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
-            this.chkHideTaskbar.Location = new System.Drawing.Point(13, 22);
+            this.chkHideTaskbar.Location = new System.Drawing.Point(13, 50);
             this.chkHideTaskbar.Name = "chkHideTaskbar";
             this.chkHideTaskbar.Size = new System.Drawing.Size(100, 23);
-            this.chkHideTaskbar.TabIndex = 0;
-            this.chkHideTaskbar.Text = "Hide Taskbar";
+            this.chkHideTaskbar.TabIndex = 1;
+            this.chkHideTaskbar.Text = UIText.HideTaskbar;
             this.chkHideTaskbar.UseVisualStyleBackColor = true;
             // 
             // chkHideStartMenu
             // 
             this.chkHideStartMenu.AutoSize = true;
             this.chkHideStartMenu.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
-            this.chkHideStartMenu.Location = new System.Drawing.Point(13, 45);
+            this.chkHideStartMenu.Location = new System.Drawing.Point(13, 78);
             this.chkHideStartMenu.Name = "chkHideStartMenu";
             this.chkHideStartMenu.Size = new System.Drawing.Size(118, 23);
-            this.chkHideStartMenu.TabIndex = 1;
-            this.chkHideStartMenu.Text = "Hide Start Menu";
+            this.chkHideStartMenu.TabIndex = 2;
+            this.chkHideStartMenu.Text = UIText.HideStartMenu;
             this.chkHideStartMenu.UseVisualStyleBackColor = true;
             // 
             // lblPasswordHint
@@ -402,7 +402,7 @@ namespace RestrictedMode
             this.lblPasswordHint.Name = "lblPasswordHint";
             this.lblPasswordHint.Size = new System.Drawing.Size(399, 19);
             this.lblPasswordHint.TabIndex = 0;
-            this.lblPasswordHint.Text = "Leave empty to not require password when exiting Restricted Mode:";
+            this.lblPasswordHint.Text = UIText.PasswordHint;
             // 
             // txtRestrictedPassword
             // 
@@ -420,7 +420,7 @@ namespace RestrictedMode
             this.btnShowPassword.Name = "btnShowPassword";
             this.btnShowPassword.Size = new System.Drawing.Size(32, 26);
             this.btnShowPassword.TabIndex = 2;
-            this.btnShowPassword.Text = "👁";
+            this.btnShowPassword.Text = UIText.Show;
             this.btnShowPassword.UseVisualStyleBackColor = true;
             this.btnShowPassword.Click += new System.EventHandler(this.btnShowPassword_Click);
             // 
@@ -439,7 +439,7 @@ namespace RestrictedMode
             this.MinimumSize = new System.Drawing.Size(500, 430);
             this.Name = "RestrictedModeApplication";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Restricted Mode — Configuration";
+            this.Text = UIText.AppTitle;
             this.grpHotkey.ResumeLayout(false);
             this.grpHotkey.PerformLayout();
             this.grpWatchDog.ResumeLayout(false);

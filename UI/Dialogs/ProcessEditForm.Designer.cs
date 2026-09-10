@@ -35,7 +35,7 @@ namespace RestrictedMode
             this.lblExe.Name = "lblExe";
             this.lblExe.Size = new System.Drawing.Size(68, 13);
             this.lblExe.TabIndex = 0;
-            this.lblExe.Text = "Exe path:";
+            this.lblExe.Text = UIText.ExePath;
             //
             // txtExePath
             //
@@ -54,7 +54,7 @@ namespace RestrictedMode
             this.btnBrowseExe.Name = "btnBrowseExe";
             this.btnBrowseExe.Size = new System.Drawing.Size(28, 26);
             this.btnBrowseExe.TabIndex = 2;
-            this.btnBrowseExe.Text = "...";
+            this.btnBrowseExe.Text = UIText.Browse;
             this.btnBrowseExe.UseVisualStyleBackColor = true;
             this.btnBrowseExe.Click += new System.EventHandler(this.btnBrowseExe_Click);
             //
@@ -66,7 +66,7 @@ namespace RestrictedMode
             this.lblArgs.Name = "lblArgs";
             this.lblArgs.Size = new System.Drawing.Size(50, 13);
             this.lblArgs.TabIndex = 3;
-            this.lblArgs.Text = "Arguments:";
+            this.lblArgs.Text = UIText.ArgumentsLabel;
             //
             // txtArguments
             //
@@ -85,7 +85,7 @@ namespace RestrictedMode
             this.lblWorkDir.Name = "lblWorkDir";
             this.lblWorkDir.Size = new System.Drawing.Size(97, 13);
             this.lblWorkDir.TabIndex = 5;
-            this.lblWorkDir.Text = "Working directory (optional):";
+            this.lblWorkDir.Text = UIText.WorkingDirectoryLabel;
             //
             // txtWorkingDir
             //
@@ -104,7 +104,7 @@ namespace RestrictedMode
             this.btnBrowseDir.Name = "btnBrowseDir";
             this.btnBrowseDir.Size = new System.Drawing.Size(28, 26);
             this.btnBrowseDir.TabIndex = 7;
-            this.btnBrowseDir.Text = "...";
+            this.btnBrowseDir.Text = UIText.Browse;
             this.btnBrowseDir.UseVisualStyleBackColor = true;
             this.btnBrowseDir.Click += new System.EventHandler(this.btnBrowseDir_Click);
             //
@@ -117,7 +117,7 @@ namespace RestrictedMode
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 28);
             this.btnOK.TabIndex = 8;
-            this.btnOK.Text = "OK";
+            this.btnOK.Text = UIText.OK;
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             //
@@ -130,7 +130,7 @@ namespace RestrictedMode
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 28);
             this.btnCancel.TabIndex = 9;
-            this.btnCancel.Text = "Cancel";
+            this.btnCancel.Text = UIText.Cancel;
             this.btnCancel.UseVisualStyleBackColor = true;
             //
             // ProcessEditForm
@@ -156,7 +156,7 @@ namespace RestrictedMode
             this.MinimizeBox = false;
             this.Name = "ProcessEditForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Add / Edit process";
+            this.Text = UIText.ProcessTitle;
             this.ResumeLayout(false);
             this.PerformLayout();
         }

@@ -23,8 +23,8 @@ namespace RestrictedMode
         {
             using (var dlg = new OpenFileDialog())
             {
-                dlg.Filter = "Executable (*.exe)|*.exe|All files (*.*)|*.*";
-                dlg.Title = "Select .exe file";
+                dlg.Filter = UIText.ExeFilter;
+                dlg.Title = UIText.SelectExe;
                 if (!string.IsNullOrWhiteSpace(txtExePath.Text) && File.Exists(txtExePath.Text))
                     dlg.InitialDirectory = Path.GetDirectoryName(txtExePath.Text);
                 if (dlg.ShowDialog(this) == DialogResult.OK)
@@ -40,7 +40,7 @@ namespace RestrictedMode
         {
             using (var dlg = new FolderBrowserDialog())
             {
-                dlg.Description = "Select working directory";
+                dlg.Description = UIText.SelectWorkingDirectory;
                 if (!string.IsNullOrWhiteSpace(txtWorkingDir.Text) && Directory.Exists(txtWorkingDir.Text))
                     dlg.SelectedPath = txtWorkingDir.Text;
                 if (dlg.ShowDialog(this) == DialogResult.OK)
@@ -53,20 +53,20 @@ namespace RestrictedMode
             string exe = (txtExePath.Text ?? "").Trim();
             if (string.IsNullOrEmpty(exe))
             {
-                MessageBox.Show(this, "Please select the .exe file path.", "Missing information", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, UIText.MissingExe, UIText.MissingInformation, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtExePath.Focus();
                 return;
             }
             if (!File.Exists(exe))
             {
-                MessageBox.Show(this, "The .exe file does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, UIText.ExeNotFound, UIText.ErrorTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtExePath.Focus();
                 return;
             }
             string workDir = (txtWorkingDir.Text ?? "").Trim();
             if (!string.IsNullOrEmpty(workDir) && !Directory.Exists(workDir))
             {
-                MessageBox.Show(this, "Working directory does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, UIText.DirectoryNotFound, UIText.ErrorTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtWorkingDir.Focus();
                 return;
             }

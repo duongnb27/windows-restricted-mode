@@ -8,9 +8,10 @@ using Microsoft.Win32;
 namespace RestrictedMode
 {
     /// <summary>
-    /// Blocks Windows edge-swipe system UI (Notification Center / Action Center, Task View, tablet edge UI)
-    /// Uses a machine policy for edge swipe and a user policy for Notification Center.
-    /// Administrator rights are required. Reboot after deployment to activate all policies.
+    /// Applies the machine edge-swipe policy without disabling Widgets or Notification Center.
+    /// Verify gesture blocking on the target Windows build. Administrator rights are required.
+    /// Reboot (or at least sign out) after
+    /// first apply — AllowEdgeSwipe often does not take effect until then.
     /// </summary>
     public static class EdgeSwipePolicy
     {
@@ -38,107 +39,30 @@ namespace RestrictedMode
                 Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
         }
 
-        // Snapshots belong to this restricted session, not to each Start click.
-        private sealed class PolicyValue
+        private const string EdgePath = @"Software\Policies\Microsoft\Windows\EdgeUI";
+        private const string EdgeValue = "AllowEdgeSwipe";
+
+        public static bool IsBlocked()
         {
-            public readonly RegistryHive Hive;
-            public readonly string Path;
-            public readonly string Name;
-            public readonly int Desired;
-            private bool captured, changed, existed;
-            private object original;
-            private RegistryValueKind kind;
-
-            public PolicyValue(RegistryHive hive, string path, string name, int desired)
-            { Hive = hive; Path = path; Name = name; Desired = desired; }
-
-            private RegistryKey OpenRoot()
-            {
-                return RegistryKey.OpenBaseKey(Hive, Environment.Is64BitOperatingSystem
-                    ? RegistryView.Registry64 : RegistryView.Registry32);
-            }
-
-            public bool Apply()
-            {
-                try
-                {
-                    using (var root = OpenRoot())
-                    {
-                        using (var key = root.OpenSubKey(Path))
-                        {
-                            object current = key?.GetValue(Name, null, RegistryValueOptions.DoNotExpandEnvironmentNames);
-                            if (!captured)
-                            {
-                                existed = current != null;
-                                original = current;
-                                if (existed) kind = key.GetValueKind(Name);
-                                captured = true;
-                            }
-                            if (current is int && (int)current == Desired &&
-                                key.GetValueKind(Name) == RegistryValueKind.DWord) return true;
-                        }
-                        using (var key = root.CreateSubKey(Path, true))
-                        {
-                            if (key == null) throw new IOException("Cannot open policy key.");
-                            // Retain snapshot even if a write or its verification fails.
-                            changed = true;
-                            key.SetValue(Name, Desired, RegistryValueKind.DWord);
-                            if (!Equals(key.GetValue(Name), Desired) || key.GetValueKind(Name) != RegistryValueKind.DWord)
-                                throw new IOException("Policy verification failed.");
-                        }
-                    }
-                    return true;
-                }
-                catch (Exception ex) { LogError("Apply " + Hive + "\\" + Path + "\\" + Name, ex); return false; }
-            }
-
-            public bool Restore()
-            {
-                try
-                {
-                    if (changed)
-                    {
-                        using (var root = OpenRoot())
-                        using (var key = root.CreateSubKey(Path, true))
-                        {
-                            if (key == null) throw new IOException("Cannot restore policy key.");
-                            if (existed) key.SetValue(Name, original, kind);
-                            else key.DeleteValue(Name, false);
-                            object actual = key.GetValue(Name, null, RegistryValueOptions.DoNotExpandEnvironmentNames);
-                            if (existed ? (key.GetValueKind(Name) != kind ||
-                                !System.Collections.StructuralComparisons.StructuralEqualityComparer.Equals(actual, original)) : actual != null)
-                                throw new IOException("Policy restore verification failed.");
-                        }
-                    }
-                    captured = changed = false;
-                    original = null;
-                    return true;
-                }
-                catch (Exception ex) { LogError("Restore " + Hive + "\\" + Path + "\\" + Name, ex); return false; }
-            }
+            using (var root = OpenMachineRegistry())
+            using (var key = root.OpenSubKey(EdgePath))
+                return Equals(key?.GetValue(EdgeValue), 0);
         }
 
-        private static readonly PolicyValue Edge = new PolicyValue(RegistryHive.LocalMachine,
-            @"Software\Policies\Microsoft\Windows\EdgeUI", "AllowEdgeSwipe", 0);
-        private static readonly PolicyValue Notifications = new PolicyValue(RegistryHive.CurrentUser,
-            @"Software\Policies\Microsoft\Windows\Explorer", "DisableNotificationCenter", 1);
-
-        public static bool Disable()
+        // This is a persistent machine setting, independent of restricted sessions.
+        public static void SetBlocked(bool blocked)
         {
-            LastError = null;
-            bool edge = Edge.Apply();
-            bool notifications = Notifications.Apply();
-            return edge && notifications;
+            using (var root = OpenMachineRegistry())
+            using (var key = root.CreateSubKey(EdgePath, true))
+            {
+                if (key == null) throw new IOException(UIText.EdgeSettingsOpenFailed);
+                int desired = blocked ? 0 : 1;
+                key.SetValue(EdgeValue, desired, RegistryValueKind.DWord);
+                if (!Equals(key.GetValue(EdgeValue), desired) ||
+                    key.GetValueKind(EdgeValue) != RegistryValueKind.DWord)
+                    throw new IOException(UIText.EdgeSettingsVerificationFailed);
+            }
         }
-
-        public static bool Enable()
-        {
-            LastError = null;
-            bool edge = Edge.Restore();
-            bool notifications = Notifications.Restore();
-            return edge && notifications;
-        }
-
         private delegate bool EnumWindowsProc(IntPtr hwnd, IntPtr parameter);
         [DllImport("user32.dll")]
         private static extern bool EnumWindows(EnumWindowsProc callback, IntPtr parameter);

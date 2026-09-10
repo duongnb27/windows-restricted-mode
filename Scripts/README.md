@@ -2,18 +2,14 @@
 
 Build Release and copy RestrictedMode.exe and RestrictedMode.exe.config, plus
 config.json if configured. The embedded manifest requests Administrator rights.
-No policy script is required: the app reads actual registry values on every Start.
+The Settings tab includes "Block screen-edge swipes (restart required)".
+It reads the current machine registry setting, not config.json. Checking writes
+AllowEdgeSwipe=0; unchecking writes AllowEdgeSwipe=1. Each successful change shows
+a restart reminder. Restart Windows manually to apply the change.
+Starting/stopping Restricted Mode and closing the app never change this setting.
+An existing AllowEdgeSwipe=0 is shown as checked, including manually configured values.
+The app does not write AllowNewsAndInterests or DisableNotificationCenter.
 Run under the kiosk account; HKCU belongs to the account used for elevation.
-
-Missing or different policies are applied and verified. Their original value and
-registry type (or absence) are retained for the restricted session. Repeated Start
-calls do not replace that snapshot. Exiting restricted mode or closing normally
-restores only values changed by this app. Existing matching policies are left alone,
-including values installed previously by an administrator.
-Restore failures are logged and shown; a subsequent close can retry failed restores.
-Snapshots are in memory: forced termination, crash or power loss cannot restore them.
-The next launch reads the registry as it then exists.
-
 Explorer is never restarted. Existing folder windows are asked to close on Start;
 desktop/taskbar processes are not killed. Windows may require a reboot for policy
 changes to become effective; registry verification alone does not verify activation.
@@ -26,6 +22,6 @@ Keep the EXE at that location; after moving it, enable startup again from the ne
 A task for another EXE/account is not displayed as enabled; checking replaces it.
 The legacy registration scripts are no longer needed.
 
-Test on the target touchscreen: absent, already matching and differing policies;
-repeated Start; normal exit and reopen; right/left swipes after activation.
+Test on the target touchscreen: toggle edge-swipe blocking in Settings, restart,
+verify right/left swipes; stop, close and reopen to verify the setting persists.
 Logs: %LOCALAPPDATA%\RestrictedMode\policy.log.

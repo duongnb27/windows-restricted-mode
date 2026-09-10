@@ -14,7 +14,6 @@ namespace RestrictedMode
             Font = new Font("Segoe UI", 10F);
             ClientSize = new Size(900, 700);
             MinimumSize = new Size(850, 650);
-            Text = "Restricted Mode | Settings";
             using (var stream = typeof(RestrictedModeApplication).Assembly.GetManifestResourceStream("RestrictedMode.AppIcon.ico"))
                 if (stream != null) Icon = new Icon(stream);
 
@@ -22,28 +21,24 @@ namespace RestrictedMode
             var icon = new PictureBox { Location = new Point(26, 26), Size = new Size(48, 48),
                 SizeMode = PictureBoxSizeMode.Zoom, Image = Icon.ToBitmap() };
             header.Controls.Add(icon);
-            header.Controls.Add(new Label { Text = "Restricted Mode", AutoSize = true,
+            header.Controls.Add(new Label { Text = UIText.AppName, AutoSize = true,
                 Font = new Font("Segoe UI", 22F, FontStyle.Bold), ForeColor = Color.White, Location = new Point(88, 18) });
-            header.Controls.Add(new Label { Text = "Configure access, managed apps and Windows startup.", AutoSize = true,
+            header.Controls.Add(new Label { Text = UIText.AppSubtitle, AutoSize = true,
                 ForeColor = Color.FromArgb(180, 195, 215), Location = new Point(92, 65) });
 
             var tabs = new SettingsNavigation { Dock = DockStyle.Fill, Font = Font };
-            var access = CreateSettingsPage(tabs, "Access & security");
-            var apps = CreateSettingsPage(tabs, "Managed apps");
-            var system = CreateSettingsPage(tabs, "Settings");
-            AddSection(access, grpPassword, "Administrator access", 110);
-            AddSection(access, grpHotkey, "Exit shortcut", 125);
-            AddSection(access, grpHotCorner, "Touch exit corner", 145);
-            AddSection(apps, grpWatchDog, "Keep applications running", 355);
-            AddSection(system, grpUtility, "Desktop & startup", 135);
-            lblPasswordHint.Text = "Set an exit password. Leave empty to allow access without a password.";
+            var access = CreateSettingsPage(tabs, UIText.AccessTab);
+            var apps = CreateSettingsPage(tabs, UIText.AppsTab);
+            var system = CreateSettingsPage(tabs, UIText.SettingsTab);
+            AddSection(access, grpPassword, 110);
+            AddSection(access, grpHotkey, 125);
+            AddSection(access, grpHotCorner, 145);
+            AddSection(apps, grpWatchDog, 355);
+            AddSection(system, grpUtility, 150);
             txtRestrictedPassword.AutoSize = false;
             txtRestrictedPassword.SetBounds(10, 48, 260, 32);
             btnShowPassword.Location = new Point(282, 48);
             btnShowPassword.Size = new Size(80, 32);
-            btnShowPassword.Text = "Show";
-            chkAlsoAllowDefaultHotkey.Text = "Also allow Ctrl + Shift + F12";
-            chkHotCornerEnabled.Text = "Enable touch corner to request exit";
             lstProcesses.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lstProcesses.Size = new Size(770, 235);
             lstProcesses.BorderStyle = BorderStyle.FixedSingle;
@@ -51,14 +46,11 @@ namespace RestrictedMode
             btnAddProcess.Location = new Point(13, 298);
             btnRemoveProcess.Location = new Point(145, 298);
             btnAddProcess.Size = btnRemoveProcess.Size = new Size(120, 36);
-            btnAddProcess.Text = "Add application";
-            btnRemoveProcess.Text = "Remove";
             colExe.Width = 285;
             colArgs.Width = 190;
             colWorkDir.Width = 265;
 
             var footer = new Panel { Dock = DockStyle.Bottom, Height = 86, BackColor = Color.White };
-            btnStartRestricted.Text = "Start";
             btnStartRestricted.Size = new Size(180, 40);
             btnStartRestricted.Anchor = AnchorStyles.None;
             footer.Controls.Add(btnStartRestricted);
@@ -98,11 +90,10 @@ namespace RestrictedMode
             return flow;
         }
 
-        private static void AddSection(FlowLayoutPanel page, GroupBox group, string title, int height)
+        private static void AddSection(FlowLayoutPanel page, GroupBox group, int height)
         {
             group.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             group.Dock = DockStyle.None;
-            group.Text = title;
             group.BackColor = Color.White;
             group.ForeColor = Color.FromArgb(30, 41, 59);
             group.Size = new Size(810, height);

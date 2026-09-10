@@ -1,7 +1,7 @@
 # Restricted Mode
 
-Windows kiosk controls with an English settings interface: Access & security,
-Managed apps, and Windows settings. Startup can be enabled at sign-in directly
+Windows kiosk controls with an English settings interface: Access & Security,
+Managed Apps, and Windows settings. Startup can be enabled at sign-in directly
 from the Windows settings tab. The EXE requests administrator privileges.
 
 See [architecture](docs/architecture.md) for module responsibilities and extension
