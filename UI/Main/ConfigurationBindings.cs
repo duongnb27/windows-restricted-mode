@@ -21,7 +21,10 @@ namespace RestrictedMode
                 chkAlsoAllowDefaultHotkey.Checked = c.ExitHotkey.AlsoAllowDefaultHotkey;
             }
             txtRestrictedPassword.Text = c.RestrictedPassword ?? "";
-            chkAlsoAllowDefaultPassword.Checked = c.AlsoAllowDefaultPassword;
+            // Default password is temporarily mandatory and its setting is hidden from users.
+            // chkAlsoAllowDefaultPassword.Checked = c.AlsoAllowDefaultPassword; // Restore with UI.
+            c.AlsoAllowDefaultPassword = true;
+            chkAlsoAllowDefaultPassword.Checked = true;
 
             chkHotCornerEnabled.Checked = c.ExitHotCornerEnabled;
             var cornerIdx = Math.Max(0, Math.Min(3, c.ExitHotCornerCorner));
@@ -77,7 +80,9 @@ namespace RestrictedMode
                 }
             }
             _config.WatchDog.Processes = list.ToArray();
-            _config.AlsoAllowDefaultPassword = chkAlsoAllowDefaultPassword.Checked;
+            // Keep the hidden default-password option enabled regardless of legacy config values.
+            // _config.AlsoAllowDefaultPassword = chkAlsoAllowDefaultPassword.Checked; // Restore with UI.
+            _config.AlsoAllowDefaultPassword = true;
             _config.ExitHotCornerEnabled = chkHotCornerEnabled.Checked;
             _config.ExitHotCornerCorner = cboHotCornerPosition.SelectedIndex >= 0 ? Math.Min(3, cboHotCornerPosition.SelectedIndex) : 0;
             _config.ExitHotCornerSizePx = (int)numHotCornerSize.Value;

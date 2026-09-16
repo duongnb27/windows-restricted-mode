@@ -270,7 +270,8 @@ namespace RestrictedMode
             this.grpPassword.Controls.Add(this.lblPasswordHint);
             this.grpPassword.Controls.Add(this.txtRestrictedPassword);
             this.grpPassword.Controls.Add(this.btnSavePassword);
-            this.grpPassword.Controls.Add(this.chkAlsoAllowDefaultPassword);
+            // Default-password UI is temporarily disabled. Uncomment to restore it.
+            // this.grpPassword.Controls.Add(this.chkAlsoAllowDefaultPassword);
             this.grpPassword.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.grpPassword.Location = new System.Drawing.Point(12, 12);
             this.grpPassword.Name = "grpPassword";

@@ -12,7 +12,8 @@ namespace RestrictedMode
         private void InitializeAutoSave()
         {
             // Attach only after initial configuration has populated all controls.
-            foreach (var check in new[] { chkCtrl, chkShift, chkAlt, chkAlsoAllowDefaultHotkey, chkAlsoAllowDefaultPassword,
+            foreach (var check in new[] { chkCtrl, chkShift, chkAlt, chkAlsoAllowDefaultHotkey,
+                // chkAlsoAllowDefaultPassword, // Restore with the default-password UI.
                 chkHotCornerEnabled, chkHideTaskbar, chkHideStartMenu })
                 check.CheckedChanged += AutoSaveChanged;
             txtRestrictedPassword.TextChanged += PasswordInputChanged;

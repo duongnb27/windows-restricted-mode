@@ -30,7 +30,7 @@ namespace RestrictedMode
             var access = CreateSettingsPage(tabs, UIText.AccessTab);
             var apps = CreateSettingsPage(tabs, UIText.AppsTab);
             var system = CreateSettingsPage(tabs, UIText.SettingsTab);
-            AddSection(access, grpPassword, 125);
+            AddSection(access, grpPassword, 95);
             AddSection(access, grpHotkey, 125);
             AddSection(access, grpHotCorner, 145);
             AddSection(apps, grpWatchDog, 355);
@@ -59,9 +59,11 @@ namespace RestrictedMode
             };
             grpPassword.Controls.Add(_passwordDirtyIndicator);
             _passwordDirtyIndicator.BringToFront();
-            chkAlsoAllowDefaultPassword.Location = new Point(10, 86);
-            chkAlsoAllowDefaultPassword.Text = UIText.DefaultPassword + ": "
-                + new string('●', DefaultRestrictedPassword.Length);
+            // Default-password UI is temporarily disabled. Uncomment these lines,
+            // plus its Controls.Add line in the Designer, to restore it.
+            // chkAlsoAllowDefaultPassword.Location = new Point(10, 86);
+            // chkAlsoAllowDefaultPassword.Text = UIText.DefaultPassword + ": "
+            //     + new string('●', DefaultRestrictedPassword.Length);
             lstProcesses.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lstProcesses.Size = new Size(770, 235);
             lstProcesses.BorderStyle = BorderStyle.FixedSingle;

@@ -12,16 +12,10 @@ namespace RestrictedMode
         private ServicesWatchDog _watchDog;
         private ExitHotCorners _exitHotCorners;
         private AppConfig _config;
-        /// <summary>
-        /// When true, form can show (after exit); blocked while restricted.
-        /// </summary>
         private bool _allowShowForm;
         private bool _initialLoadDone;
-        /// <summary>
-        /// When true, password dialog is already visible; ignore further hotkey/hot corner until it closes.
-        /// </summary>
         private bool _passwordDialogShowing;
-        private const string DefaultRestrictedPassword = "123@12345";
+        private const string DefaultRestrictedPassword = "BtCcBd5ef7QVAcf&mM&4u9BZotp98KdF36oMWsekt^$EPcB2TBvfX7b@BHyWp5w7dysk59g6PhT^8PYaWpz6!yrJRBnxHBLR@JYmMLmKGa4UFrHrSE^DX*gzmscp5pra";
         private static readonly string[] ExitKeyNames = { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "Escape", "Tab", "Pause" };
 
         public RestrictedModeApplication()
