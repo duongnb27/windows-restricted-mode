@@ -32,10 +32,8 @@ namespace RestrictedMode
             lblPrompt.SetBounds(24, 106, 432, 40);
             lblPrompt.TextAlign = ContentAlignment.TopLeft;
             txtPassword.AutoSize = false;
-            txtPassword.SetBounds(24, 150, 340, 34);
+            txtPassword.SetBounds(24, 150, 432, 34);
             txtPassword.TabIndex = 0;
-            btnToggleVisibility.SetBounds(376, 150, 80, 34);
-            btnToggleVisibility.TabIndex = 1;
             _passwordError = new Label { Location = new Point(24, 190), Size = new Size(432, 24),
                 ForeColor = Color.Firebrick, Text = "" };
             Controls.Add(_passwordError);
@@ -44,7 +42,7 @@ namespace RestrictedMode
             btnOK.SetBounds(246, 220, 120, 40);
             btnOK.TabIndex = 2;
             btnCancel.TabIndex = 3;
-            foreach (var button in new[] { btnToggleVisibility, btnOK, btnCancel })
+            foreach (var button in new[] { btnOK, btnCancel })
             {
                 button.FlatStyle = FlatStyle.Flat;
                 button.FlatAppearance.BorderColor = Color.FromArgb(203, 213, 225);

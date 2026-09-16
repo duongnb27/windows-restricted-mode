@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace RestrictedMode
 {
     /// <summary>
-    /// Password input dialog with show/hide toggle.
+    /// Password input dialog. Password characters always remain masked.
     /// </summary>
     public partial class PasswordDialogForm : Form
     {
@@ -36,6 +36,7 @@ namespace RestrictedMode
         private static extern bool AllowSetForegroundWindow(int dwProcessId);
 
         public string ExpectedPassword { private get; set; }
+        public string AlternateExpectedPassword { private get; set; }
 
         public string EnteredPassword => txtPassword.Text ?? "";
 
@@ -101,16 +102,11 @@ namespace RestrictedMode
             txtPassword.Select();
         }
 
-        private void btnToggleVisibility_Click(object sender, EventArgs e)
-        {
-            txtPassword.UseSystemPasswordChar = !txtPassword.UseSystemPasswordChar;
-            btnToggleVisibility.Text = txtPassword.UseSystemPasswordChar ? UIText.Show : UIText.Hide;
-            txtPassword.Focus();
-        }
-
         private void btnOK_Click(object sender, EventArgs e)
         {
-            if (ExpectedPassword != null && EnteredPassword != ExpectedPassword)
+            bool matchesPrimary = ExpectedPassword != null && EnteredPassword == ExpectedPassword;
+            bool matchesAlternate = AlternateExpectedPassword != null && EnteredPassword == AlternateExpectedPassword;
+            if (!matchesPrimary && !matchesAlternate)
             {
                 _passwordError.Text = UIText.IncorrectPassword;
                 txtPassword.Focus();

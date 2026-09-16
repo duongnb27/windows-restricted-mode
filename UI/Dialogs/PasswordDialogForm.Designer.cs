@@ -17,7 +17,6 @@ namespace RestrictedMode
         {
             this.lblPrompt = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
-            this.btnToggleVisibility = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -40,18 +39,6 @@ namespace RestrictedMode
             this.txtPassword.Size = new System.Drawing.Size(268, 25);
             this.txtPassword.TabIndex = 0;
             this.txtPassword.UseSystemPasswordChar = true;
-            //
-            // btnToggleVisibility
-            //
-            this.btnToggleVisibility.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
-            this.btnToggleVisibility.Location = new System.Drawing.Point(286, 36);
-            this.btnToggleVisibility.Name = "btnToggleVisibility";
-            this.btnToggleVisibility.Size = new System.Drawing.Size(36, 28);
-            this.btnToggleVisibility.TabIndex = 2;
-            this.btnToggleVisibility.Text = UIText.Show;
-            this.btnToggleVisibility.UseVisualStyleBackColor = true;
-            this.btnToggleVisibility.Click += new System.EventHandler(this.btnToggleVisibility_Click);
-            //
             // btnOK
             //
             this.btnOK.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
@@ -83,7 +70,6 @@ namespace RestrictedMode
             this.ClientSize = new System.Drawing.Size(334, 118);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.btnToggleVisibility);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.lblPrompt);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -100,7 +86,6 @@ namespace RestrictedMode
 
         private System.Windows.Forms.Label lblPrompt;
         private System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.Button btnToggleVisibility;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
     }

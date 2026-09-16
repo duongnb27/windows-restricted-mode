@@ -35,7 +35,8 @@ namespace RestrictedMode
             this.grpPassword = new System.Windows.Forms.GroupBox();
             this.lblPasswordHint = new System.Windows.Forms.Label();
             this.txtRestrictedPassword = new System.Windows.Forms.TextBox();
-            this.btnShowPassword = new System.Windows.Forms.Button();
+            this.btnSavePassword = new System.Windows.Forms.Button();
+            this.chkAlsoAllowDefaultPassword = new System.Windows.Forms.CheckBox();
             this.grpHotCorner = new System.Windows.Forms.GroupBox();
             this.chkHotCornerEnabled = new System.Windows.Forms.CheckBox();
             this.lblHotCornerPosition = new System.Windows.Forms.Label();
@@ -268,7 +269,8 @@ namespace RestrictedMode
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpPassword.Controls.Add(this.lblPasswordHint);
             this.grpPassword.Controls.Add(this.txtRestrictedPassword);
-            this.grpPassword.Controls.Add(this.btnShowPassword);
+            this.grpPassword.Controls.Add(this.btnSavePassword);
+            this.grpPassword.Controls.Add(this.chkAlsoAllowDefaultPassword);
             this.grpPassword.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
             this.grpPassword.Location = new System.Drawing.Point(12, 12);
             this.grpPassword.Name = "grpPassword";
@@ -412,17 +414,30 @@ namespace RestrictedMode
             this.txtRestrictedPassword.Size = new System.Drawing.Size(173, 25);
             this.txtRestrictedPassword.TabIndex = 1;
             this.txtRestrictedPassword.UseSystemPasswordChar = true;
-            // 
-            // btnShowPassword
-            // 
-            this.btnShowPassword.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
-            this.btnShowPassword.Location = new System.Drawing.Point(189, 46);
-            this.btnShowPassword.Name = "btnShowPassword";
-            this.btnShowPassword.Size = new System.Drawing.Size(32, 26);
-            this.btnShowPassword.TabIndex = 2;
-            this.btnShowPassword.Text = UIText.Show;
-            this.btnShowPassword.UseVisualStyleBackColor = true;
-            this.btnShowPassword.Click += new System.EventHandler(this.btnShowPassword_Click);
+            //
+            // btnSavePassword
+            //
+            this.btnSavePassword.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
+            this.btnSavePassword.Location = new System.Drawing.Point(207, 46);
+            this.btnSavePassword.Name = "btnSavePassword";
+            this.btnSavePassword.Size = new System.Drawing.Size(80, 26);
+            this.btnSavePassword.TabIndex = 2;
+            this.btnSavePassword.Text = UIText.SavePassword;
+            this.btnSavePassword.UseVisualStyleBackColor = true;
+            this.btnSavePassword.Click += new System.EventHandler(this.btnSavePassword_Click);
+            //
+            // chkAlsoAllowDefaultPassword
+            //
+            this.chkAlsoAllowDefaultPassword.AutoSize = true;
+            this.chkAlsoAllowDefaultPassword.Checked = true;
+            this.chkAlsoAllowDefaultPassword.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkAlsoAllowDefaultPassword.Font = new System.Drawing.Font(UIFonts.Family, UIFonts.SizeNormal);
+            this.chkAlsoAllowDefaultPassword.Location = new System.Drawing.Point(10, 76);
+            this.chkAlsoAllowDefaultPassword.Name = "chkAlsoAllowDefaultPassword";
+            this.chkAlsoAllowDefaultPassword.Size = new System.Drawing.Size(225, 23);
+            this.chkAlsoAllowDefaultPassword.TabIndex = 3;
+            this.chkAlsoAllowDefaultPassword.Text = UIText.DefaultPassword;
+            this.chkAlsoAllowDefaultPassword.UseVisualStyleBackColor = true;
             // 
             // RestrictedModeApplication
             // 
@@ -478,7 +493,8 @@ namespace RestrictedMode
         private System.Windows.Forms.GroupBox grpPassword;
         private System.Windows.Forms.Label lblPasswordHint;
         private System.Windows.Forms.TextBox txtRestrictedPassword;
-        private System.Windows.Forms.Button btnShowPassword;
+        private System.Windows.Forms.Button btnSavePassword;
+        private System.Windows.Forms.CheckBox chkAlsoAllowDefaultPassword;
         private System.Windows.Forms.GroupBox grpHotCorner;
         private System.Windows.Forms.CheckBox chkHotCornerEnabled;
         private System.Windows.Forms.Label lblHotCornerPosition;

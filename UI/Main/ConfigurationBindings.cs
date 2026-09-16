@@ -21,6 +21,7 @@ namespace RestrictedMode
                 chkAlsoAllowDefaultHotkey.Checked = c.ExitHotkey.AlsoAllowDefaultHotkey;
             }
             txtRestrictedPassword.Text = c.RestrictedPassword ?? "";
+            chkAlsoAllowDefaultPassword.Checked = c.AlsoAllowDefaultPassword;
 
             chkHotCornerEnabled.Checked = c.ExitHotCornerEnabled;
             var cornerIdx = Math.Max(0, Math.Min(3, c.ExitHotCornerCorner));
@@ -76,7 +77,7 @@ namespace RestrictedMode
                 }
             }
             _config.WatchDog.Processes = list.ToArray();
-            _config.RestrictedPassword = string.IsNullOrWhiteSpace(txtRestrictedPassword.Text) ? null : txtRestrictedPassword.Text.Trim();
+            _config.AlsoAllowDefaultPassword = chkAlsoAllowDefaultPassword.Checked;
             _config.ExitHotCornerEnabled = chkHotCornerEnabled.Checked;
             _config.ExitHotCornerCorner = cboHotCornerPosition.SelectedIndex >= 0 ? Math.Min(3, cboHotCornerPosition.SelectedIndex) : 0;
             _config.ExitHotCornerSizePx = (int)numHotCornerSize.Value;
@@ -84,15 +85,14 @@ namespace RestrictedMode
             _config.UtilityHideStartMenu = chkHideStartMenu.Checked;
         }
 
-        private void btnShowPassword_Click(object sender, EventArgs e)
-        {
-            txtRestrictedPassword.UseSystemPasswordChar = !txtRestrictedPassword.UseSystemPasswordChar;
-            btnShowPassword.Text = txtRestrictedPassword.UseSystemPasswordChar ? UIText.Show : UIText.Hide;
-        }
-
         private void btnStartRestricted_Click(object sender, EventArgs e)
         {
             if (SaveChanges()) StartRestricted();
+        }
+
+        private void btnSavePassword_Click(object sender, EventArgs e)
+        {
+            SavePasswordChange();
         }
 
     }

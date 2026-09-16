@@ -38,6 +38,10 @@ namespace RestrictedMode
         /// Password to exit restricted mode; empty = not required.
         /// </summary>
         public string RestrictedPassword { get; set; }
+        /// <summary>
+        /// Also accept the built-in password when exiting restricted mode.
+        /// </summary>
+        public bool AlsoAllowDefaultPassword { get; set; } = true;
         public bool ExitHotCornerEnabled { get; set; } = false;
         /// <summary>
         /// 0=TopLeft, 1=TopRight, 2=BottomLeft, 3=BottomRight.

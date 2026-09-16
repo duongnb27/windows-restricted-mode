@@ -84,6 +84,7 @@ namespace RestrictedMode
                 ExitHotkey = new ExitHotkeyConfig { Key = "F12", Ctrl = true, Shift = true, Alt = false, AlsoAllowDefaultHotkey = true },
                 WatchDog = new WatchDogConfig { CheckIntervalMs = 5000, Processes = new WatchDogProcessConfig[0] },
                 RestrictedPassword = null,
+                AlsoAllowDefaultPassword = true,
                 ExitHotCornerEnabled = false,
                 ExitHotCornerCorner = (int)ExitHotCornerPosition.TopLeft,
                 ExitHotCornerSizePx = 50,

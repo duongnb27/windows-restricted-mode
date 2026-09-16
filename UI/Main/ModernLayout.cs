@@ -30,15 +30,38 @@ namespace RestrictedMode
             var access = CreateSettingsPage(tabs, UIText.AccessTab);
             var apps = CreateSettingsPage(tabs, UIText.AppsTab);
             var system = CreateSettingsPage(tabs, UIText.SettingsTab);
-            AddSection(access, grpPassword, 110);
+            AddSection(access, grpPassword, 125);
             AddSection(access, grpHotkey, 125);
             AddSection(access, grpHotCorner, 145);
             AddSection(apps, grpWatchDog, 355);
             AddSection(system, grpUtility, 150);
+            _passwordInputBorder = new Panel
+            {
+                BackColor = Color.FromArgb(148, 163, 184),
+                Location = new Point(10, 48),
+                Size = new Size(260, 32)
+            };
             txtRestrictedPassword.AutoSize = false;
-            txtRestrictedPassword.SetBounds(10, 48, 260, 32);
-            btnShowPassword.Location = new Point(282, 48);
-            btnShowPassword.Size = new Size(80, 32);
+            txtRestrictedPassword.BorderStyle = BorderStyle.None;
+            txtRestrictedPassword.SetBounds(1, 1, 258, 30);
+            _passwordInputBorder.Controls.Add(txtRestrictedPassword);
+            grpPassword.Controls.Add(_passwordInputBorder);
+            btnSavePassword.SetBounds(300, 48, 80, 32);
+            _passwordDirtyIndicator = new Label
+            {
+                AutoSize = true,
+                Text = "*",
+                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                ForeColor = Color.Firebrick,
+                Location = new Point(272, 48),
+                Visible = false,
+                AccessibleName = UIText.UnsavedPasswordChanges
+            };
+            grpPassword.Controls.Add(_passwordDirtyIndicator);
+            _passwordDirtyIndicator.BringToFront();
+            chkAlsoAllowDefaultPassword.Location = new Point(10, 86);
+            chkAlsoAllowDefaultPassword.Text = UIText.DefaultPassword + ": "
+                + new string('●', DefaultRestrictedPassword.Length);
             lstProcesses.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lstProcesses.Size = new Size(770, 235);
             lstProcesses.BorderStyle = BorderStyle.FixedSingle;
@@ -78,6 +101,9 @@ namespace RestrictedMode
         {
             var page = tabs.AddPage(title);
             page.BackColor = Color.FromArgb(243, 246, 250);
+            // The section margins already provide bottom spacing. Removing the
+            // duplicate bottom padding prevents a redundant vertical scrollbar.
+            page.Padding = new Padding(16, 16, 16, 0);
             var flow = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoScroll = true,
                 FlowDirection = FlowDirection.TopDown, WrapContents = false };
             page.Controls.Add(flow);

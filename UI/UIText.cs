@@ -19,9 +19,10 @@ namespace RestrictedMode
         public const string HotCornerGroup = "Exit corner";
         public const string ApplicationsGroup = "Keep applications running";
         public const string DesktopGroup = "Desktop && startup";
-        public const string PasswordHint = "Set an exit password. Leave empty to allow access without a password.";
-        public const string Show = "Show";
-        public const string Hide = "Hide";
+        public const string PasswordHint = "Custom exit password:";
+        public const string DefaultPassword = "Default password";
+        public const string SavePassword = "Save";
+        public const string UnsavedPasswordChanges = "Unsaved password changes";
         public const string HotCornerEnabled = "Enable hot corner to request exit";
         public const string AddApplication = "Add application";
         public const string Remove = "Remove";

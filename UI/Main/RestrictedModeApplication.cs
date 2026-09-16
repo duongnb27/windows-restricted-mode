@@ -21,6 +21,7 @@ namespace RestrictedMode
         /// When true, password dialog is already visible; ignore further hotkey/hot corner until it closes.
         /// </summary>
         private bool _passwordDialogShowing;
+        private const string DefaultRestrictedPassword = "123@12345";
         private static readonly string[] ExitKeyNames = { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "Escape", "Tab", "Pause" };
 
         public RestrictedModeApplication()
@@ -140,8 +141,11 @@ namespace RestrictedMode
 
         private void ShowExitPasswordDialogCore()
         {
-            string requiredPassword = string.IsNullOrWhiteSpace(_config?.RestrictedPassword) ? null : _config.RestrictedPassword;
-            if (requiredPassword == null)
+            string customPassword = string.IsNullOrWhiteSpace(_config?.RestrictedPassword) ? null : _config.RestrictedPassword;
+            string defaultPassword = _config != null && _config.AlsoAllowDefaultPassword
+                ? DefaultRestrictedPassword
+                : null;
+            if (customPassword == null && defaultPassword == null)
             {
                 RestrictedState.ConfirmExitRestricted();
                 return;
@@ -152,7 +156,8 @@ namespace RestrictedMode
             {
                 using (var dlg = new PasswordDialogForm(UIText.ExitTitle, UIText.ExitPrompt))
                 {
-                    dlg.ExpectedPassword = requiredPassword;
+                    dlg.ExpectedPassword = customPassword;
+                    dlg.AlternateExpectedPassword = defaultPassword;
                     dlg.TopMost = true;
                     dlg.StartPosition = FormStartPosition.CenterScreen;
                     dlg.ShowInTaskbar = false;
